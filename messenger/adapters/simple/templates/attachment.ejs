@@ -1,0 +1,7 @@
+<% for(var i=0; i<attachments.length; i++) {%>
+    <%= attachments[i].text %>
+    <% for(var j=0; j< attachments[i].actions.length; j++) { %>
+        type `<%= attachments[i].actions[j].payload %>` to proceed with
+        <%= attachments[i].actions[j].title %>
+    <% } %>
+<% } %>

@@ -1,0 +1,22 @@
+ORDER SUMMARY
+
+Items
+---------------------------------------------
+<% for(var i=0; i<receipt.elements.length; i++) {%>
+<%=i+1%>.<%=receipt.elements[i].title%> | <%=receipt.elements[i].currency%> <%=receipt.elements[i].price%>
+<% } %>
+
+Address
+---------------------------------------------
+Street: <%=receipt.address.street_1%>
+City: <%=receipt.address.city%>
+State: <%=receipt.address.state%>
+Postal Code: <%=receipt.address.postal_code%>
+Country: <%=receipt.address.country%>
+
+Summary
+---------------------------------------------
+Subtotal: <%=receipt.summary.subtotal%>
+Shipping: <%=receipt.summary.shipping_cost%>
+Tax: <%=receipt.summary.total_tax%>
+Total: <%=receipt.summary.total_cost%>
