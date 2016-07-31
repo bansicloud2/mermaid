@@ -76,7 +76,7 @@ WorkflowController.prototype.route = function(uri, overrides) {
 
 
     if (overrides) {
-        data = deepExtend(data, overrides);
+        data = Object.assign({}, data, overrides);
     }
 
 
