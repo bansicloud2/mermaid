@@ -36,7 +36,7 @@ MemoryHelper.prototype.resolveField = function(key, value, root){
 
   } else if(value.template) {
 
-    var resolvedValue = Utils.injectVariables(value.template, this.state.context);
+    var resolvedValue = Utils.injectVariables(value.template, this.state.context, this.state.app.config);
 
     dot.set(key, resolvedValue, this.memory);
 

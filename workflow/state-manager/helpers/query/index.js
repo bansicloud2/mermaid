@@ -21,7 +21,7 @@ QueryHelper.prototype.getDataForQuery = function() {
         deferred.resolve({});
     } else {
 
-        var endpoint = utils.injectVariables(query.endpoint, self.state.context);
+        var endpoint = utils.injectVariables(query.endpoint, self.state.context, self.state.app.config);
 
         var method = query.method || "GET";
 
@@ -37,7 +37,7 @@ QueryHelper.prototype.getDataForQuery = function() {
 
             for (var key in query.data) {
 
-                data[key] = utils.injectVariables(query.data[key], self.state.context)
+                data[key] = utils.injectVariables(query.data[key], self.state.context, self.state.app.config)
 
             }
 
