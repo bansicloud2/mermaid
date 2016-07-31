@@ -3,7 +3,7 @@ var LetteredOptionsTemplate = require("./lettered-options");
 
 var NumberedListTemplate = LetteredOptionsTemplate.extend({
 
-    getMessages: function(stateManager, convo) {
+    getMessages: function(stateManager) {
 
         var options = "";
 

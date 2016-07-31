@@ -2,7 +2,7 @@ var _ = require("lodash");
 var BaseTemplate = require("./base");
 var Utils = require("../../../utils");
 var dot = require("dot-object");
-var logger = require("../../../../../logger")
+var logger = require("../../../logger")
 
 var StoreInformationTemplate = BaseTemplate.extend({
 

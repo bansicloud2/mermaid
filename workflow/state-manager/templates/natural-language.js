@@ -4,7 +4,7 @@ var _ = require("lodash"),
     tokenizer = new natural.WordTokenizer(),
     Utils = require("../../../utils"),
     dot = require("dot-object"),
-    logger = require("../../../../../logger")
+    logger = require("../../../logger")
 
 var getKeywordsFromResponse = function(response, keywords) {
 
@@ -25,7 +25,7 @@ var getKeywordsFromResponse = function(response, keywords) {
 
 var NaturalLanguageTemplate = BaseTemplate.extend({
 
-    getMessages: function(stateManager, convo) {
+    getMessages: function(stateManager) {
 
         var message = stateManager.context.prompt;
 

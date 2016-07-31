@@ -6,7 +6,7 @@ var logger = require("../../../logger")
 
 var BaseTemplate = Class.extend({
 
-    getMessages: function(stateManager, convo) {
+    getMessages: function(stateManager) {
 
         var message = stateManager.context.prompt;
 

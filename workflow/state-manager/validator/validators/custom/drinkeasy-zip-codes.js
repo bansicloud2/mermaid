@@ -1,6 +1,6 @@
 var _ = require("lodash");
 var zipcodes = require("zipcodes");
-var logger = require("../../../../../../../logger");
+var logger = require("../../../../../logger");
 var utils = require("../../utils");
 
 var partners = {

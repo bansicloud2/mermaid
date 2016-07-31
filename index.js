@@ -1,5 +1,7 @@
 var walkSync = require('walk-sync');
 var path = require("path");
+var logger = require("./logger");
+
 
 var findConvo = function(botkit, id) {
 
@@ -23,7 +25,9 @@ var findConvo = function(botkit, id) {
 
 };
 
-var getData = function(directory, callback) {
+var getData = function(directory) {
+
+    logger.info("Getting data from data directory: %s", directory);
 
     var data = {};
 
@@ -53,8 +57,6 @@ module.exports = function(app, config) {
     app.config = config;
 
     app.data = getData(config.data_directory);
-
-    console.log(app.data);
 
     config.services.forEach(function(serviceName) {
         require("./services/" + serviceName)(app, config);

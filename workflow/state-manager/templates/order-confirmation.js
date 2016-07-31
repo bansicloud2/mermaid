@@ -7,7 +7,7 @@ var Utils = require("../../../utils");
 var orderNumber = 0;
 
 var OrderConfirmationTemplate = TextConfirmTemplate.extend({
-    getMessages: function(stateManager, convo) {
+    getMessages: function(stateManager) {
 
       orderNumber++;
 

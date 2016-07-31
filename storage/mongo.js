@@ -34,7 +34,7 @@ module.exports = function(app) {
                     }
                 }
 
-                User.findOne(query).exec(unwrapFromList(cb));
+                app.service("/v1/users").find(query).exec(unwrapFromList(cb));
             },
             save: function(data, cb) {
 
@@ -44,38 +44,29 @@ module.exports = function(app) {
 
                     adapter.users.addProfileData(data).then((data) => {
 
-                        User.update({
-                            id: data.id
-                        }, data, {
+                        app.service("/v1/users").update(data.id, data, {
                             upsert: true,
                             new: true
-                        }, function(err, user) {
-
-                            if (err) {
-                                logger.error("Error upading user in mongo adapter: %s", err);
-                            }
+                        }).then((user) => {
 
                             return cb && cb(null, user);
 
-                        });
+                        }).catch((err) => cb(err));
 
                     }).catch((err) => cb(err));
 
                 } else {
 
-                    User.update({
-                        id: data.id
-                    }, data, {
+                    app.service("/v1/users").update(data.id, data, {
                         upsert: true,
                         new: true
-                    }, function(err, user) {
-
-                        if (err) {
-                            logger.error("Error upading user in mongo adapter: %s", err);
-                        }
+                    }).then((user) => {
 
                         return cb && cb(null, user);
 
+                    }).catch((err) => {
+                        logger.error("Error upading user in mongo adapter: %s", err);
+                        return cb && cb(err);
                     });
 
                 }
@@ -83,31 +74,31 @@ module.exports = function(app) {
             },
             update: function(query, data, cb) {
 
-                User.update(query, {
+                app.service("/v1/users").update(query.id, {
                     $set: data
-                }, cb);
+                }).then(cb).catch((err) => logger.error(err));
 
             },
             all: function(cb) {
-                User.find({}).lean().exec(cb);
+                app.service("/v1/users").find().then(cb).catch((err) => logger.error(err));
             }
         },
         channels: {
             get: function(id, cb) {
-                Channel.findOne({
+                app.service("/v1/channels").find({
                     id: id
-                }).exec(unwrapFromList(cb));
+                }).then(unwrapFromList(cb)).catch((err) => logger.error(err));
             },
             save: function(data, cb) {
-                Channel.update({
+                app.service("/v1/channels").update({
                     id: data.id
                 }, data, {
                     upsert: true,
                     new: true
-                }, cb);
+                }).then(cb).catch((err) => logger.error(err));
             },
             all: function(cb) {
-                Channel.find({}).lean().exec(cb);
+                app.service("v1/channels").find().then(cb).catch((err) => logger.error(err));
             }
         }
     };

@@ -172,7 +172,7 @@ WorkflowController.prototype.handleStage = function(stateManager, next) {
 
                 self.messenger.addConvo(convo);
 
-                var parts = stateManager.parse(convo, next);
+                var parts = stateManager.parse(next);
 
                 if (isFinalMessage) {
 

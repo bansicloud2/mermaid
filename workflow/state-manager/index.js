@@ -111,19 +111,21 @@ StateManager.prototype.init = function(base_data, options) {
 };
 
 
-StateManager.prototype.messagesGenerator = function(convo) {
+StateManager.prototype.messagesGenerator = function() {
 
-    var self = this;
+    var parser = _getParser(this.context.type);
 
-    var parser = _getParser(self.context.type);
+    try {
+        var messages = parser.getMessages(this);
+    } catch (err) {
+        logger.error(err);
+    }
 
-    var messages = parser.getMessages(self, convo);
-
-    messages = _.map(messages, function(message) {
+    messages = _.map(messages, (message) => {
 
         if (message.text) {
 
-            message.text = utils.injectVariables(message.text, self.context, this.app.config);
+            message.text = utils.injectVariables(message.text, this.context, this.app.config);
 
             return message;
 
@@ -138,7 +140,7 @@ StateManager.prototype.messagesGenerator = function(convo) {
     return messages;
 };
 
-StateManager.prototype.infoGenerator = function(convo) {
+StateManager.prototype.infoGenerator = function() {
 
     logger.debug("Info before going into generator: %s", JSON.stringify(this.context.info, null, 4));
 
@@ -225,12 +227,12 @@ StateManager.prototype.getEnd = function(callback) {
     return end;
 };
 
-StateManager.prototype.parse = function(convo, callback) {
+StateManager.prototype.parse = function(callback) {
 
     return {
-        messages: this.messagesGenerator(convo),
+        messages: this.messagesGenerator(),
         pattern_catcher: this.patternCatcherGenerator(),
-        info: this.infoGenerator(convo),
+        info: this.infoGenerator(),
         post_info: this.postInfoGenerator(),
         end: this.getEnd(callback)
     };
