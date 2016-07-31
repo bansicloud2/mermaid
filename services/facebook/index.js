@@ -32,6 +32,6 @@ module.exports = function(app, config) {
 
     (new Commands(app, controller)).init(EVENTS);
 
-    app.botkit.facebook = controller;
+    app.mermaid.facebook = controller;
 
 };

@@ -52,7 +52,7 @@ var getData = function(directory) {
 
 module.exports = function(app, config) {
 
-    app.botkit = {};
+    app.mermaid = {};
 
     app.config = config;
 
@@ -62,9 +62,9 @@ module.exports = function(app, config) {
         require("./services/" + serviceName)(app, config);
     });
 
-    app.botkit.findConvo = function(id, service) {
+    app.mermaid.findConvo = function(id, service) {
 
-        return findConvo(app.botkit[service], id);
+        return findConvo(app.mermaid[service], id);
 
     };
 

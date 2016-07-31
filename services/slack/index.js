@@ -131,6 +131,6 @@ module.exports = function(app, config) {
 
     });
 
-    app.botkit.slack = controller;
+    app.mermaid.slack = controller;
 
 }
