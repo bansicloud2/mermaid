@@ -50,13 +50,17 @@ var getData = function(directory) {
 }
 
 
-module.exports = function(app, config) {
+module.exports = function(app, config, mermaidMethods) {
 
     app.mermaid = {};
+
+    app.mermaid.methods = {};
 
     app.config = config;
 
     app.data = getData(config.data_directory);
+
+    Object.assign(app.mermaid.methods, mermaidMethods);
 
     config.services.forEach(function(serviceName) {
         require("./services/" + serviceName)(app, config);

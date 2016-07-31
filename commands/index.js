@@ -243,9 +243,15 @@ Commands.prototype.get = function() {
 
         "help": {
             options: [/^help$/gi],
-            exit_response: "I've notified my team of experts. Someone should assist you shortly.",
             action: (bot, message) => {
-                Utils.emailTeam("Someone is asking for help in the platform.");
+
+                this.app.mermaid.methods.messageTeam("Someone is asking for help in the platform.");
+
+                var messenger = new Messenger(this.app, bot, message);
+
+                messenger.reply({
+                    text: "I've notified my team of experts. Someone should assist you shortly."
+                });
             }
         },
 
