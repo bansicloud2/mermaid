@@ -1,7 +1,7 @@
 var _ = require("lodash");
 var BaseTemplate = require("./base");
 var ejs = require("ejs");
-var logger = require("../../../../../logger");
+var logger = require("../../../logger");
 
 var TextConfirmTemplate = BaseTemplate.extend({
 

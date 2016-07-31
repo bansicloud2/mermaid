@@ -1,7 +1,7 @@
 var _ = require("lodash");
 var TextConfirmTemplate = require("./text-confirm");
 var ejs = require("ejs");
-var logger = require("../../../../../logger");
+var logger = require("../../../logger");
 var Utils = require("../../../utils");
 
 var orderNumber = 0;

@@ -1,6 +1,6 @@
 var _ = require("lodash");
 var NumberedListTemplate = require("./numbered-list");
-var logger = require("../../../../../logger");
+var logger = require("../../../logger");
 var Utils = require("../../../utils");
 
 var MultipleChoiceQuestionTemplate = NumberedListTemplate.extend({

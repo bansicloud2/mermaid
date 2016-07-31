@@ -1,7 +1,7 @@
 var GoogleMapsAPI = require("googlemaps");
 var utils = require("../utils");
 var _ = require("lodash");
-var logger = require("../../../../../../logger")
+var logger = require("../../../../logger")
 
 var publicConfig = {
     key: 'AIzaSyAly023I7kW2qTJYo94rK14gfIizV_C0QQ',

@@ -277,7 +277,9 @@ WorkflowController.prototype.handleApiCall = function(stateManager) {
 
         //TODO: Probably want to handle the error.status's in a more robust way
 
-        if (err || (body && body.status !== 200)) {
+        logger.debug("Response from external system: %s", httpResponse)
+
+        if (err || (body && body.status == 400 || body && body.status == 500)) {
 
             err = err || body.error;
 

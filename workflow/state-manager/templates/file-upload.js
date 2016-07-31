@@ -1,8 +1,7 @@
 var _ = require("lodash");
 var BaseTemplate = require("./base");
 var ejs = require("ejs");
-var config = require("../../../../../../config");
-var logger = require("../../../../../logger");
+var logger = require("../../../logger");
 
 var FileUploadTemplate = BaseTemplate.extend({
 
