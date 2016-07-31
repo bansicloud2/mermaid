@@ -74,6 +74,9 @@ WorkflowController.prototype.route = function(uri, overrides) {
 
     var data = this.app.data[uriObj.uri];
 
+    if(!data){
+      return logger.error("No route with this name: %s", uriObj.uri)
+    }
 
     if (overrides) {
         data = Object.assign({}, data, overrides);
