@@ -1,8 +1,7 @@
 var Botkit = require('botkit');
-var config = require("../../../../../config");
 var botkitMongoStorage = require('../../storage/mongo');
 var DEBUG = process.env.NODE_ENV !== "prod";
-var logger = require("../../../../logger");
+var logger = require("../../logger");
 var Commands = require("../../commands");
 var Messenger = require("../../messenger");
 var disableBotForUserMiddleware = require("../middleware/").disableBotForUser;
@@ -11,7 +10,7 @@ var addSageUserToMessageMiddleware = require("../middleware/").addSageUserToMess
 var SERVICE = "slack";
 var EVENTS = ['direct_message', 'direct_mention', 'mention'];
 
-module.exports = function(app) {
+module.exports = function(app, config) {
 
     var controller = Botkit.slackbot({
         storage: botkitMongoStorage(app),

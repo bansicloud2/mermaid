@@ -1,7 +1,6 @@
 var Utils = require("../utils");
 var Messenger = require("../messenger");
-var logger = require("../../../logger");
-var config = require("../../../../config");
+var logger = require("../logger");
 var WorkflowController = require("../workflow");
 var _ = require("lodash");
 
@@ -109,7 +108,7 @@ Commands.prototype.get = function() {
         "goto": {
             options: ["goto (.*)$"],
 
-            exit_response: config.goto_message,
+            exit_response: this.app.config.goto_message,
 
             action: (bot, message) => {
 
@@ -207,7 +206,7 @@ Commands.prototype.get = function() {
         "restart": {
             options: [/^restart$/gi, /^refresh$/gi, /^reset$/gi],
 
-            exit_response: config.restart_message,
+            exit_response: this.app.config.restart_message,
 
             action: (bot, message) => {
 
@@ -289,7 +288,7 @@ Commands.prototype.get = function() {
                     messenger.recordMessageInDB(message, "received", null);
 
                     messenger.reply({
-                        text: config.opening_message
+                        text: this.app.config.opening_message
                     }, "/");
 
                 }

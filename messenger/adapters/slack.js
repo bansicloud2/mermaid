@@ -1,9 +1,8 @@
 var _ = require("lodash");
-var config = require("../../../../../config");
 
 var colors = ["#6B6054", "#929487", "#A1B0AB", "#C3DAC3", "#D5ECD4"]
 
-var SlackAdapter = function() {
+var SlackAdapter = function(config) {
 
     this.currentIconUrl = config.icon_url;
     this.currentUsername = config.bot_username;

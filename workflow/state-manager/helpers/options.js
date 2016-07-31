@@ -1,6 +1,6 @@
 var _ = require("lodash");
 var ejs = require("ejs");
-var logger = require("../../../../../logger");
+var logger = require("../../../logger");
 var utils = require("../../../utils");
 var Q = require("q");
 

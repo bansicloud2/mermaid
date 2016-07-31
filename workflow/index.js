@@ -1,8 +1,7 @@
-var Meta = require("../../../models/meta");
 var StateManager = require("./state-manager");
 var url = require("url");
 var qs = require('qs');
-var logger = require("../../../logger");
+var logger = require("../logger");
 var Messenger = require("../messenger");
 var _ = require("lodash");
 var qs = require("qs");
@@ -10,7 +9,6 @@ var deepExtend = require('deep-extend');
 var async = require("async");
 var request = require("request");
 var ejs = require("ejs");
-var config = require("../../../../config");
 var dot = require("dot-object");
 var utils = require("../utils");
 var Q = require("q");
@@ -74,54 +72,41 @@ WorkflowController.prototype.route = function(uri, overrides) {
 
     logger.info("Hit route: %s with options: %s", uriObj.uri, JSON.stringify(uriObj.options));
 
-    Meta.findOne({
-        uri: uriObj.uri
-    }, (err, data) => {
+    var data = this.app.data[uriObj.uri];
 
-        if (err) {
-            logger.error("Couldn't retrive uri from mongo store, %s", err);
-            return deferred.reject(new Error("Couldn't retrive uri from mongo store"));
+
+    if (overrides) {
+        data = deepExtend(data, overrides);
+    }
+
+
+    if (data.type === "ref") {
+        return this.route(data["ref-uri"], data.overrides);
+    }
+
+    var stateManager = new StateManager(this.controller, this, this.bot, this.message, this.commandsForPatternCatcher);
+
+    stateManager.init(data, uriObj.options).then(() => {
+
+        logger.info("State manager init complete.");
+
+        switch (stateManager.context.type) {
+            case "api-call":
+                this.handleApiCall(stateManager);
+                break;
+            case "update-data":
+                this.handleUpdateData(stateManager, uriObj.options);
+                break;
+            default:
+                this.handleStage(stateManager);
+                deferred.resolve();
         }
 
-        if (data === null) {
-            return deferred.reject(new Error("No route for pathname: " + uriObj.uri));
-        }
-
-        data = data.toObject();
-
-        if (overrides) {
-            data = deepExtend(data, overrides);
-        }
+    }).catch((err) => {
+        deferred.reject(err);
+    })
 
 
-        if (data.type === "ref") {
-            return this.route(data["ref-uri"], data.overrides);
-        }
-
-        var stateManager = new StateManager(this.controller, this, this.bot, this.message, this.commandsForPatternCatcher);
-
-        stateManager.init(data, uriObj.options).then(() => {
-
-            logger.info("State manager init complete.");
-
-            switch (stateManager.context.type) {
-                case "api-call":
-                    this.handleApiCall(stateManager);
-                    break;
-                case "update-data":
-                    this.handleUpdateData(stateManager, uriObj.options);
-                    break;
-                default:
-                    this.handleStage(stateManager);
-
-                    deferred.resolve();
-            }
-
-        }).catch((err) => {
-            deferred.reject(err);
-        })
-
-    });
 
     return deferred.promise;
 
@@ -262,7 +247,7 @@ WorkflowController.prototype.handleApiCall = function(stateManager) {
         systemKey,
         context_uri = stateManager.getUri(),
         method = stateManager.context.request.method,
-        uri = utils.injectVariables(stateManager.context.request.uri, stateManager.context),
+        uri = utils.injectVariables(stateManager.context.request.uri, stateManager.context, this.app.config),
         nextURI = stateManager.getNextUri(),
         self = this;
 

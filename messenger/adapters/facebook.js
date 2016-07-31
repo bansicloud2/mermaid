@@ -1,6 +1,5 @@
 var _ = require("lodash");
-var config = require("../../../../../config");
-var logger = require("../../../../logger");
+var logger = require("../../logger");
 
 var FacebookAdapter = function() {};
 

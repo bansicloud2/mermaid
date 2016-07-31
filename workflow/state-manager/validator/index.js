@@ -1,4 +1,4 @@
-var logger = require("../../../../../logger");
+var logger = require("../../../logger");
 
 var Validator = function(validator, baseRoute){
 

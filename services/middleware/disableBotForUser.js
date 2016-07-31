@@ -1,7 +1,6 @@
 var _ = require("lodash");
 var Utils = require("../../utils");
-var logger = require("../../../../logger");
-var config = require("../../../../../config");
+var logger = require("../../logger");
 var Messenger = require("../../messenger");
 
 var disableBotForUser = function(app, serviceType) {

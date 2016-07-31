@@ -1,8 +1,7 @@
 /* Simple Wrapper to send and recieve messages */
 
 var _ = require("lodash");
-var User = require("../../../models/user");
-var logger = require("../../../logger");
+var logger = require("../logger");
 var utils = require("../utils");
 var InternalMessenger = require("./internal-messenger");
 var Q = require("q");
@@ -27,7 +26,7 @@ Messenger.prototype.getMessageObject = function(messageObj) {
 
     var Adapter = adapters[this.service];
 
-    var adapter = new Adapter();
+    var adapter = new Adapter(this.app.config);
 
     var messageObject = adapter.getMessageObject(clone);
 

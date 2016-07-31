@@ -2,7 +2,7 @@ var Class = require('class-extend');
 var Validator = require("../validator");
 var async = require("async");
 var Utils = require("../../../utils");
-var logger = require("../../../../../logger")
+var logger = require("../../../logger")
 
 var BaseTemplate = Class.extend({
 

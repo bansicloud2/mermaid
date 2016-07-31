@@ -1,38 +1,28 @@
-var Team = require("../../../models/team"),
-    User = require("../../../models/user"),
-    Channel = require("../../../models/channel"),
-    _ = require("lodash"),
-    logger = require("../../../logger"),
+var _ = require("lodash"),
+    logger = require("../logger"),
     Utils = require("../utils");
 
 var unwrapFromList = function(cb) {
-    return function(err, data) {
-        if (err) return cb(err);
+    return function(data) {
         cb(null, data ? data.toObject() : null);
     };
 };
-
-var users = {};
 
 module.exports = function(app) {
 
     var storage = {
         teams: {
             get: function(id, cb) {
-                Team.findOne({
-                    id: id
-                }).exec(unwrapFromList(cb));
+                app.service("/v1/teams").get(id).then(unwrapFromList(cb));
             },
             save: function(data, cb) {
-                Team.update({
-                    id: data.id
-                }, data, {
+                app.service("/v1/teams").update(data.id, data, {
                     upsert: true,
                     new: true
-                }, cb);
+                }, cb)
             },
             all: function(cb) {
-                Team.find({}).lean().exec(cb);
+                app.service("/v1/teams").find().then(cb)
             }
         },
         users: {

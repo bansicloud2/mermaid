@@ -1,5 +1,5 @@
 var utils = require("../../utils");
-var logger = require("../../../../logger");
+var logger = require("../../logger");
 var async = require("async");
 var SimpleAdapter = require("../adapters/simple");
 var _ = require("lodash");

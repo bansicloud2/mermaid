@@ -1,7 +1,6 @@
 var _ = require("lodash");
-var logger = require("../../../../logger");
+var logger = require("../../logger");
 var utils = require("../../utils");
-var config = require("../../../../../config");
 var Q = require("q");
 var Hooks = require("./hooks");
 var Helpers = require("./helpers");
@@ -16,7 +15,7 @@ var _getParser = function(type) {
     try {
         var Parser = require("./templates/" + type);
     } catch (e) {
-        throw new Error("There was no template for type: `" + type + "`");
+        logger.error(e);
     }
 
     var parser = new Parser();
@@ -124,7 +123,7 @@ StateManager.prototype.messagesGenerator = function(convo) {
 
         if (message.text) {
 
-            message.text = utils.injectVariables(message.text, self.context);
+            message.text = utils.injectVariables(message.text, self.context, this.app.config);
 
             return message;
 
@@ -141,16 +140,16 @@ StateManager.prototype.messagesGenerator = function(convo) {
 
 StateManager.prototype.infoGenerator = function(convo) {
 
-    var self = this;
+    logger.debug("Info before going into generator: %s", JSON.stringify(this.context.info, null, 4));
 
-    logger.debug("Info before going into generator: %s", JSON.stringify(self.context.info, null, 4));
-
-    var info = _.map(self.context.info, function(message) {
+    var info = _.map(this.context.info, (message) => {
 
         if (_.isObject(message)) {
             return message;
         } else {
-            return { text : utils.injectVariables(message, self.context) };
+            return {
+                text: utils.injectVariables(message, this.context, this.app.config)
+            };
         }
 
 
@@ -215,11 +214,11 @@ StateManager.prototype.getEnd = function(callback) {
 
     //Apply Hooks
 
-    if(this.context["after-hooks"]){
-      var afterHooks = this.context["after-hooks"];
-      var hooks = new Hooks(this.app, this.context, afterHooks);
+    if (this.context["after-hooks"]) {
+        var afterHooks = this.context["after-hooks"];
+        var hooks = new Hooks(this.app, this.context, afterHooks);
 
-      end = hooks.wrapFn(end);
+        end = hooks.wrapFn(end);
 
     }
 

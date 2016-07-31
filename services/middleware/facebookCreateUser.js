@@ -1,15 +1,14 @@
 var _ = require("lodash");
 var graph = require('fbgraph');
 var Utils = require("../../utils");
-var logger = require("../../../../logger");
-var config = require("../../../../../config");
+var logger = require("../../logger");
 
 var userHash = {};
 var SERVICE = "facebook";
 
 var facebookCreateUser = function(app) {
 
-    graph.setAccessToken(config.facebook.PAGE_TOKEN);
+    graph.setAccessToken(app.config.facebook.PAGE_TOKEN);
 
     return function(bot, message, next) {
 
