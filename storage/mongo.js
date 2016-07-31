@@ -2,39 +2,27 @@ var _ = require("lodash"),
     logger = require("../logger"),
     Utils = require("../utils");
 
-var unwrapFromList = function(cb) {
-    return function(data) {
-        cb(null, data ? data.toObject() : null);
-    };
-};
-
 module.exports = function(app) {
 
     var storage = {
         teams: {
             get: function(id, cb) {
-                app.service("/v1/teams").get(id).then(unwrapFromList(cb));
+                app.service("/v1/teams").get(id).then((team) => cb(null, team)).catch((e) => logger.error(e));
             },
             save: function(data, cb) {
                 app.service("/v1/teams").update(data.id, data, {
                     upsert: true,
                     new: true
-                }, cb)
+                }).then((team) => cb(null, team)).catch((e) => logger.error(e))
             },
             all: function(cb) {
-                app.service("/v1/teams").find().then(cb)
+                app.service("/v1/teams").find().then((teams) => cb(null, teams.data)).catch((e) => logger.error(e));
             }
         },
         users: {
-            get: function(query, cb) {
+            get: function(id, cb) {
 
-                if (typeof query === "string") {
-                    query = {
-                        id: query
-                    }
-                }
-
-                app.service("/v1/users").find(query).exec(unwrapFromList(cb));
+                app.service("/v1/users").get(id).then((user) => cb(null, user)).catch((e) => logger.error(e));
             },
             save: function(data, cb) {
 
@@ -80,29 +68,37 @@ module.exports = function(app) {
 
             },
             all: function(cb) {
-                app.service("/v1/users").find().then(cb).catch((err) => logger.error(err));
+                app.service("/v1/users").find().then((users) => cb(null, users.data)).catch((err) => logger.error(err));
             }
         },
         channels: {
             get: function(id, cb) {
-                app.service("/v1/channels").find({
-                    id: id
-                }).then(unwrapFromList(cb)).catch((err) => logger.error(err));
-            },
-            save: function(data, cb) {
-                app.service("/v1/channels").update({
-                    id: data.id
-                }, data, {
-                    upsert: true,
-                    new: true
-                }).then(cb).catch((err) => logger.error(err));
-            },
-            all: function(cb) {
-                app.service("v1/channels").find().then(cb).catch((err) => logger.error(err));
-            }
+                app.service("/v1/channels").get(id).then((channel) => cb(null, channel)).catch((err) => logger.error(err));
+        },
+        save: function(data, cb) {
+            app.service("/v1/channels").update({
+                id: data.id
+            }, data, {
+                upsert: true,
+                new: true
+            }).then((channel) => {
+                cb(null, channel);
+            }).catch((err) => {
+                logger.error(err)
+                return cb(err);
+            });
+        },
+        all: function(cb) {
+            app.service("/v1/channels").find().then((channels) => {
+                return cb(null, channels.data);
+            }).catch((err) => {
+                logger.error(err)
+                return cb(err)
+            });
         }
-    };
+    }
+};
 
-    return storage;
+return storage;
 
 }
