@@ -35,21 +35,21 @@ Commands.prototype.getCommandsForPatternCatcher = function(bot, message) {
 
     var commands = this.get(this.app, this.controller);
 
-    _.each(commands, function(command, key) {
+    _.each(commands, (command, key) => {
 
         if (command.options) {
 
-            command.options.forEach(function(regex) {
+            command.options.forEach((regex) => {
 
                 patterns.push({
                     pattern: new RegExp(regex),
-                    callback: function(response, convo) {
+                    callback: (response, convo) => {
 
                         convo.exit_response = command.exit_response;
 
                         convo.next();
 
-                        setTimeout(function() {
+                        setTimeout(() => {
 
                             logger.debug(key);
 
@@ -57,14 +57,12 @@ Commands.prototype.getCommandsForPatternCatcher = function(bot, message) {
                                 command.action.call(this, bot, response);
                             }
 
-                        }.bind(this), 1000);
+                        }, 1000);
 
-
-
-                    }.bind(this)
+                    }
                 })
 
-            }.bind(this));
+            });
 
         }
 
@@ -258,21 +256,13 @@ Commands.prototype.get = function() {
 
                 var messenger = new Messenger(this.app, bot, message);
 
-                this.app.service("/v1/meta").find().then((data) => {
+                var routes = _.reduce(Object.keys(this.app.data), (result, route) => {
+                    return result += route + "\n"
+                }, "");
 
-                    var routes = _.reduce(_.map(data, function(o) {
-                        return o.uri;
-                    }), function(result, route) {
-                        return result += route + "\n"
-                    }, "");
-
-                    messenger.reply({
-                        text: routes
-                    });
-
-                }).catch((e) => {
-                    logger.error(e);
-                })
+                messenger.reply({
+                    text: routes
+                });
 
             }
 
