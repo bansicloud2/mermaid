@@ -1,5 +1,5 @@
 var Botkit = require('botkit');
-var botkitMongoStorage = require('../../storage/mongo');
+var mongoStorage = require('../../storage/mongo');
 var DEBUG = process.env.NODE_ENV !== "prod";
 var logger = require("../../logger");
 var Commands = require("../../commands");
@@ -13,7 +13,7 @@ var EVENTS = ['direct_message', 'direct_mention', 'mention'];
 module.exports = function(app, config) {
 
     var controller = Botkit.slackbot({
-        storage: botkitMongoStorage(app),
+        storage: mongoStorage(app),
         interactive_replies : true
     }).configureSlackApp({
         clientId: config.slack.SLACK_CLIENT_ID,

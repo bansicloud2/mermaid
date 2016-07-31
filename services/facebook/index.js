@@ -1,5 +1,5 @@
 var Botkit = require('botkit');
-var botkitMongoStorage = require('../../storage/mongo');
+var mongoStorage = require('../../storage/mongo');
 var Commands = require("../../commands");
 var facebookCreateUserMiddleware = require("../middleware/").facebookCreateUser;
 var disableBotForUserMiddleware = require("../middleware/").disableBotForUser;
@@ -10,7 +10,7 @@ var SERVICE = "facebook";
 module.exports = function(app, config) {
 
     var controller = Botkit.facebookbot({
-        storage: botkitMongoStorage(app),
+        storage: mongoStorage(app),
         access_token: config.facebook.PAGE_TOKEN,
         verify_token: config.facebook.VERIFY_TOKEN
     });
