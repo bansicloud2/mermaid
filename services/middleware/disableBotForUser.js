@@ -15,8 +15,6 @@ var disableBotForUser = function(app, serviceType) {
 
             app.service("/v1/users").get(userId).then((user) => {
 
-                logger.debug("User %s: ", user);
-
                 if (user && user.bot_disabled) {
 
                     logger.info("User %s is disabled with following message data: %s", message.user, JSON.stringify(message));
