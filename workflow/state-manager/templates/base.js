@@ -2,7 +2,8 @@ var Class = require('class-extend');
 var Validator = require("../validator");
 var async = require("async");
 var Utils = require("../../../utils");
-var logger = require("../../../logger")
+var logger = require("../../../logger");
+var _ = require("lodash");
 
 var BaseTemplate = Class.extend({
 
@@ -10,10 +11,17 @@ var BaseTemplate = Class.extend({
 
         var message = stateManager.context.prompt;
 
-        return [{
-            text: message,
+        if (_.isString(message)) {
+            message = {
+                text: message
+            }
+        }
+
+        message = Object.assign({}, message, {
             keywords: stateManager.context.keywords
-        }];
+        })
+
+        return [message];
 
     },
 
@@ -99,8 +107,8 @@ var BaseTemplate = Class.extend({
                 stateManager.controller.storage.users.update({
                     id: id
                 }, {
-                    system : {
-                      last_uri: stateManager.context.uri
+                    system: {
+                        last_uri: stateManager.context.uri
                     }
                 }, function(err, id) {
 

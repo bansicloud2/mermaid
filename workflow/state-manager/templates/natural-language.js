@@ -25,17 +25,6 @@ var getKeywordsFromResponse = function(response, keywords) {
 
 var NaturalLanguageTemplate = BaseTemplate.extend({
 
-    getMessages: function(stateManager) {
-
-        var message = stateManager.context.prompt;
-
-        return [{
-            text: message,
-            keywords: stateManager.context.keywords
-        }];
-
-    },
-
     getEnd: function(stateManager, callback) {
 
         var self = this;

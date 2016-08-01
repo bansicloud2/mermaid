@@ -115,27 +115,33 @@ StateManager.prototype.messagesGenerator = function() {
 
     var parser = _getParser(this.context.type);
 
+    var messages = [];
+
     try {
-        var messages = parser.getMessages(this);
+
+        messages = parser.getMessages(this);
+
+        messages = _.map(messages, (message) => {
+
+            logger.debug("Message: %s", JSON.stringify(message));
+
+            if (message.text) {
+
+                message.text = utils.injectVariables(message.text, this.context, this.app.config);
+
+                return message;
+
+            } else {
+                return message;
+            }
+
+        });
+
+        logger.debug("Messages: %s", JSON.stringify(messages, null, 4));
+
     } catch (err) {
         logger.error(err);
     }
-
-    messages = _.map(messages, (message) => {
-
-        if (message.text) {
-
-            message.text = utils.injectVariables(message.text, this.context, this.app.config);
-
-            return message;
-
-        } else {
-            return message;
-        }
-
-    });
-
-    logger.debug("Messages: %s", JSON.stringify(messages, null, 4));
 
     return messages;
 };

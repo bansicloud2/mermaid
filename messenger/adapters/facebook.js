@@ -57,19 +57,6 @@ FacebookAdapter.prototype.getMessageObject = function(messageObj) {
 
         _.extend(messageObj.attachment.payload, messageObj.receipt);
 
-    } else if (messageObj.keywords) {
-
-        messageObj.quick_replies = _.map(messageObj.keywords, function(keyword) {
-
-            return {
-                "content_type": "text",
-                "title": keyword,
-                "payload": keyword
-            }
-        });
-
-        delete messageObj['keywords'];
-
     } else if (messageObj.type === "img") {
 
         messageObj.attachment = {
@@ -81,6 +68,21 @@ FacebookAdapter.prototype.getMessageObject = function(messageObj) {
 
         delete messageObj["url"]
         delete messageObj["type"]
+
+    }
+
+    if (messageObj.keywords) {
+
+        messageObj.quick_replies = _.map(messageObj.keywords, function(keyword) {
+
+            return {
+                "content_type": "text",
+                "title": keyword,
+                "payload": keyword
+            }
+        });
+
+        delete messageObj['keywords'];
 
     }
 
