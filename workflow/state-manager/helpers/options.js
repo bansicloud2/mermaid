@@ -49,13 +49,13 @@ OptionsHelper.prototype.getUriPayloadHash = function() {
 
     } else {
 
-        for (var i in self.state.context["options"]) {
+        for (var option in self.state.context["options"]) {
 
-            var hash = utils.hashString(i);
+            var hash = utils.hashString(option);
 
             map[hash] = {
-                payload: i,
-                uri: self.state.context["options"][i].uri
+                payload: option,
+                uri: self.state.context["options"][option].uri
             }
         }
     }

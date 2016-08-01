@@ -13,7 +13,7 @@ var LetteredOptionsTemplate = BaseTemplate.extend({
 
             var obj = stateManager.context.uriPayloadHash[n];
 
-            var re = new RegExp("^"+obj.payload+"$");
+            var re = new RegExp("^"+obj.payload+"$", "i");
 
             patternCatcher.push({
                 pattern: re,
@@ -37,9 +37,11 @@ var LetteredOptionsTemplate = BaseTemplate.extend({
 
     getURIForResponse : function(stateManager, payload) {
 
-        var key = utils.hashString(payload)
+        payload = payload.toLowerCase();
 
-        logger.debug(key, stateManager.context.uriPayloadHash);
+        logger.debug("PAYLOAD: %s", payload);
+
+        var key = utils.hashString(payload);
 
         return stateManager.context.uriPayloadHash[key].uri;
     }
