@@ -1,6 +1,6 @@
 var ValidatorUtils = {};
 
-var DEFAULT_ERROR_MESSAGE = "🚨 Seems to have been an issue with your last entry. Can you try again for me?";
+var DEFAULT_ERROR_MESSAGE = "😕 Seems to have been an issue with your last entry. Can you try again for me?";
 
 ValidatorUtils.generateError = function(baseRoute, custom_message) {
 
