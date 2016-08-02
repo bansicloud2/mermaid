@@ -50,7 +50,9 @@ var getData = function(directory) {
 }
 
 
-module.exports = function(app, config, mermaidMethods) {
+module.exports = function(config, mermaidMethods) {
+
+    var app = require("./app");
 
     app.mermaid = {};
 
