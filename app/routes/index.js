@@ -1,7 +1,6 @@
 var logger = require("../logger");
-var config = require("../../config");
 
-module.exports = function(app) {
+module.exports = function(app, config) {
 
     //public pages=============================================
     //root

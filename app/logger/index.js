@@ -1,12 +1,10 @@
-var config = require("../../config");
-
 var winston = require('winston');
 winston.emitErrs = true;
 
 var logger = new winston.Logger({
     transports: [
         new winston.transports.Console({
-            level: config.log_level,
+            level: "debug",
             handleExceptions: false,
             json: false,
             colorize: true

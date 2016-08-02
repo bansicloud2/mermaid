@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const service = require('feathers-mongoose');
 const Message = require('../../models/message');
 var logger = require("../../logger");
-var Messenger = require("mermaid/messenger");
+var Messenger = require("../../../messenger");
 
 module.exports = function() {
 

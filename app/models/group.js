@@ -1,10 +1,67 @@
 var mongoose = require('mongoose');
-var config = require("../../config");
 var dot = require("dot-object");
+
+var group_settings = {
+    trigger_text: {
+        type: "string",
+        value: "HELL YES",
+        required: true
+    },
+    uri: {
+        base: {
+            type: "string",
+            value: "/purchase",
+            required: true
+        },
+        params: {
+            product_id: {
+                type: "string",
+                value: "",
+                required: true
+            },
+            image_url: {
+                type: "string",
+                value: "",
+                required: true
+            },
+            item_price: {
+                type: "string",
+                value: "",
+                required: true
+            },
+            item_name: {
+                type: "string",
+                value: "",
+                required: true
+            },
+            vendor_code: {
+                type: "string",
+                value: "EZRAS",
+                required: true
+            },
+            qty: {
+                type: "string",
+                value: "1",
+                required: true
+            },
+            tax_rate: {
+                type: "string",
+                value: ".075",
+                required: true
+            },
+            discount_amount: {
+                type: "string",
+                value: "0",
+                required: true
+            }
+
+        }
+    },
+
+};
 
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
-
 
 var getMongooseConfig = function(config) {
 
@@ -57,7 +114,7 @@ var GroupSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    config: getMongooseConfig(config.group_settings)
+    config: getMongooseConfig(group_settings)
 }, {
     strict: false
 });
