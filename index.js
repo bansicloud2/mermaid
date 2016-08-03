@@ -62,7 +62,31 @@ module.exports = function(config, mermaidMethods) {
 
     app.data = getData(config.data_directory);
 
-    Object.assign(app.mermaid.methods, mermaidMethods);
+    Object.assign(app.mermaid.methods, {
+
+        messageTeam: function(message) {
+            var mailgun = require('mailgun-js')({
+                apiKey: config.mailgun.apiKey,
+                domain: config.mailgun.domain
+            });
+
+            var data = {
+                to: config.admin_emails,
+                from: 'No-Reply <noreply@mg.sagebots.com>',
+                subject: config.company + ' Bot Alert',
+                text: message
+            };
+
+            mailgun.messages().send(data, function(err, body) {
+                if (err) {
+                    logger.error("Error sending message using mailgun: %s", err);
+                } else {
+                    logger.info("E-mail sent to team.");
+                }
+            });
+        }
+
+    }, mermaidMethods);
 
     config.services.forEach(function(serviceName) {
         require("./services/" + serviceName)(app, config);
