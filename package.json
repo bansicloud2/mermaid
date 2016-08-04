@@ -1,5 +1,5 @@
 {
-  "name": "mermaid",
+  "name": "@sagebots/mermaid",
   "version": "1.0.0",
   "description": "DSL for Chatbots",
   "main": "index.js",
