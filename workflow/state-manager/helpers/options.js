@@ -91,7 +91,7 @@ OptionsHelper.prototype.getOptions = function() {
 
                 if (action.uri) {
 
-                    action.uri = utils.injectVariables(action.uri, self.state.context, option, this.state.app.config);
+                    action.uri = utils.injectVariables(action.uri, self.state.context, option, self.state.app.config);
 
                 }
 

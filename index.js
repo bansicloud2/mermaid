@@ -1,6 +1,8 @@
 var walkSync = require('walk-sync');
 var path = require("path");
 var logger = require("./logger");
+var async = require("async");
+var facebook = require("./lib/facebook");
 
 
 var findConvo = function(botkit, id) {
@@ -49,6 +51,24 @@ var getData = function(directory) {
     return data;
 }
 
+var setupFacebook = function(config) {
+
+    var f = facebook(config)
+
+    var setup_functions = Object.keys(f).map(function(key) {
+        return f[key]
+    });
+
+    async.series(setup_functions, function(err, result) {
+        if (err) {
+            logger.error(err);
+        } else {
+            logger.info("Setup Facebook.");
+        }
+    });
+
+}
+
 
 module.exports = function(config, mermaidMethods) {
 
@@ -61,6 +81,10 @@ module.exports = function(config, mermaidMethods) {
     app.config = config;
 
     app.data = getData(config.data_directory);
+
+    if (config.facebook) {
+        setupFacebook(config);
+    }
 
     Object.assign(app.mermaid.methods, {
 
