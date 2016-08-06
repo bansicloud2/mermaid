@@ -3,6 +3,7 @@ var path = require("path");
 var logger = require("./logger");
 var async = require("async");
 var facebook = require("./lib/facebook");
+var lighttunnel = require("./lib/lighttunnel");
 
 
 var findConvo = function(botkit, id) {
@@ -84,6 +85,10 @@ module.exports = function(config, mermaidMethods) {
 
     if (config.facebook) {
         setupFacebook(config);
+    }
+
+    if(config.env === "development" && config.bundle){
+      lighttunnel.start(config.bundle.port)
     }
 
     Object.assign(app.mermaid.methods, {
