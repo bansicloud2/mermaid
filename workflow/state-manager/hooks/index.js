@@ -1,7 +1,10 @@
+var logger = require("../../../logger");
 var async = require("async");
 
 var HOOKS = {
-    "mark-completed": require("./mark-completed")
+    "mark-completed": require("./mark-completed"),
+    "notify-team": require("./notify-team"),
+
 }
 
 var Hooks = function(app, context, hooks) {
@@ -27,5 +30,22 @@ Hooks.prototype.wrapFn = function(fn) {
         })
     }
 };
+
+Hooks.prototype.run = function(){
+
+  async.eachSeries(this.hookObjects, (data, done) => {
+
+      var type = data.type;
+
+      var hook = HOOKS[type];
+
+      hook.call(this, done);
+
+  }, () => {
+
+      logger.debug("Hooks run.");
+  })
+
+}
 
 module.exports = Hooks;

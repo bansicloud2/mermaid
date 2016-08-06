@@ -221,22 +221,13 @@ StateManager.prototype.getEnd = function(callback) {
     var end = parser.getEnd(this, callback);
 
     //Apply Hooks
-
-    //Meta data hooks first
-
+    
     if (this.context["after-hooks"]) {
         var afterHooks = this.context["after-hooks"];
         var hooks = new Hooks(this.app, this.context, afterHooks);
 
         end = hooks.wrapFn(end);
     }
-
-    //Code hooks now
-
-    if (parser.afterHook) {
-        parser.afterHook(this)
-    }
-
 
     return end;
 };

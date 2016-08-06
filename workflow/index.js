@@ -12,6 +12,7 @@ var ejs = require("ejs");
 var dot = require("dot-object");
 var utils = require("../utils");
 var Q = require("q");
+var Hooks = require("./state-manager/hooks");
 
 var WorkflowController = function(app, controller, bot, message, commandsForPatternCatcher) {
 
@@ -74,8 +75,8 @@ WorkflowController.prototype.route = function(uri, overrides) {
 
     var data = this.app.data[uriObj.uri];
 
-    if(!data){
-      return logger.error("No route with this name: %s", uriObj.uri)
+    if (!data) {
+        return logger.error("No route with this name: %s", uriObj.uri)
     }
 
     if (overrides) {
@@ -125,9 +126,16 @@ WorkflowController.prototype.handleStage = function(stateManager, next) {
         isContainer = stateManager.isContainer(),
         nextURL = stateManager.getNextUri();
 
-
     if (self.isStageComplete(stateManager)) {
         return next ? next() : self.route(nextURL);
+    }
+
+    //Apply Hooks
+
+    if (stateManager.context["before-hooks"]) {
+        var beforeHooks = stateManager.context["before-hooks"];
+        var hooks = new Hooks(this.app, stateManager.context, beforeHooks);
+        hooks.run();
     }
 
     if (isContainer) {
