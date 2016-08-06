@@ -11,6 +11,7 @@
   "dependencies": {
     "babel-eslint": "^6.1.2",
     "botkit": "https://github.com/sage-bots/botkit",
+    "botkit-sms": "^1.0.7",
     "class-extend": "^0.1.2",
     "dot-object": "^1.4.1",
     "ejs": "^2.5.1",
@@ -27,6 +28,7 @@
     "mailgun-js": "^0.7.11",
     "mongoose": "^4.5.8",
     "natural": "^0.4.0",
+    "slack-node": "https://github.com/sage-bots/slack-node-sdk",
     "walk-sync": "^0.3.0",
     "winston": "^2.2.0",
     "zipcodes": "^2.1.0"

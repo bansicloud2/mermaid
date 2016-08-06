@@ -4,19 +4,26 @@ var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
 var botSchema = new Schema({
-	createdBy: String,
-	token: String,
-	user_id: String
-}, { _id : false });
+    createdBy: String,
+    token: String,
+    user_id: String
+}, {
+    _id: false
+});
 
 var teamSchema = new Schema({
-    id: String,
+    id: {
+        type: String,
+        unique: true
+    },
     createdBy: String,
     url: String,
     name: String,
     bot: [botSchema],
     token: String
-}, { strict : false });
+}, {
+    strict: false
+});
 
 
 module.exports = mongoose.model('Team', teamSchema);

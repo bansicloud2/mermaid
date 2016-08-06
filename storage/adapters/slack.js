@@ -1,6 +1,6 @@
 var Slack = require('slack-node');
 var _ = require("lodash");
-var logger = require("../../../../logger");
+var logger = require("../../logger");
 var Q = require("q");
 
 module.exports = function(app) {

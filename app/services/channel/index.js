@@ -8,13 +8,14 @@ module.exports = function() {
     const app = this;
 
     app.use('/v1/channel', service({
-        name: 'team',
+        name: 'channel',
         Model: Channel,
         paginate: {
             default: 100,
             max: 100
         },
-        overwrite : false
+        overwrite : false,
+        id: "id"
     }));
 
 };

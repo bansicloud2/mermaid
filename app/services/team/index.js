@@ -14,7 +14,15 @@ module.exports = function() {
             default: 100,
             max: 100
         },
-        overwrite : false
+        overwrite : false,
+        id: "id"
     }));
+
+    // Get our initialize service to that we can bind hooks
+    const teamService = app.service('/v1/teams');
+
+    teamService.after({
+        all: [service.hooks.toObject()]
+    });
 
 };
