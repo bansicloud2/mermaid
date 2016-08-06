@@ -8,7 +8,8 @@ var Q = require("q");
 
 var adapters = {
     "slack": require("./adapters/slack"),
-    "facebook": require("./adapters/facebook")
+    "facebook": require("./adapters/facebook"),
+    "sms": require("./adapters/simple")
 };
 
 var Messenger = function(app, bot, message) {

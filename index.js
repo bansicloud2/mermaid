@@ -87,9 +87,9 @@ module.exports = function(config, mermaidMethods) {
         setupFacebook(config);
     }
 
-    if(config.env === "development" && config.bundle){
-      lighttunnel.start(config.bundle.port)
-    }
+    // if(config.env === "development" && config.bundle){
+    //   lighttunnel.start(config.bundle.port)
+    // }
 
     Object.assign(app.mermaid.methods, {
 
