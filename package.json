@@ -21,6 +21,7 @@
     "feathers-rest": "^1.4.3",
     "feathers-socketio": "^1.4.1",
     "googlemaps": "^1.11.1",
+    "mailgun-js": "^0.7.11",
     "mongoose": "^4.5.8",
     "natural": "^0.4.0",
     "walk-sync": "^0.3.0",

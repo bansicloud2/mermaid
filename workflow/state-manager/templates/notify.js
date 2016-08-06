@@ -5,14 +5,11 @@ var utils = require("../../../utils");
 
 var NotifyTemplate = BaseTemplate.extend({
 
-    afterHook: function(stateManager, response) {
+    afterHook: function(stateManager) {
 
-        var prompt = stateManager.context["prompt"];
         var userId = stateManager.context.user.id;
 
-        var text = 'When prompted: "' + prompt + "\".\n" +
-            "User responded with : \"" + response + "\".\n" +
-            "Please go to the dashboard and help resolve: " + stateManager.app.config.bundle.url + "/?userId=" + userId;
+        var text = "User has requested for assistance: " + stateManager.app.config.bundle.url + "/?userId=" + userId;
 
         stateManager.app.mermaid.methods.messageTeam(text);
     }

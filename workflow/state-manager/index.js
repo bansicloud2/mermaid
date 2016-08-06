@@ -222,13 +222,21 @@ StateManager.prototype.getEnd = function(callback) {
 
     //Apply Hooks
 
+    //Meta data hooks first
+
     if (this.context["after-hooks"]) {
         var afterHooks = this.context["after-hooks"];
         var hooks = new Hooks(this.app, this.context, afterHooks);
 
         end = hooks.wrapFn(end);
-
     }
+
+    //Code hooks now
+
+    if (parser.afterHook) {
+        parser.afterHook(this)
+    }
+
 
     return end;
 };
