@@ -22,7 +22,10 @@ var smsCreateUser = function(app) {
 
             var data = {
                 id: userId,
-                type: SERVICE
+                type: SERVICE,
+                platform: {
+                  number : platformId
+                }
             };
 
             app.service("/v1/users").find({
