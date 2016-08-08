@@ -35,6 +35,6 @@ module.exports = function(app, config) {
 
     (new Commands(app, controller)).init(EVENTS);
 
-    app.mermaid.facebook = controller;
+    app.mermaid.sms = controller;
 
 };

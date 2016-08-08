@@ -28,8 +28,16 @@ module.exports = function() {
 
                         var bot = app.mermaid.slack.getBotByTeamId(teamId);
 
+
+
+                    } else if(user.type === "facebook") {
+
+                      var bot = app.mermaid.facebook.bot;
+
                     } else {
-                        var bot = app.mermaid.facebook.bot;
+
+                      var bot = app.mermaid.sms.bot;
+
                     }
 
                     var messenger = new Messenger(app, bot, botkit_message_obj);
