@@ -13,7 +13,7 @@ var LetteredOptionsTemplate = BaseTemplate.extend({
 
             var obj = stateManager.context.uriPayloadHash[n];
 
-            var re = new RegExp("^"+obj.payload+"$", "i");
+            var re = new RegExp("^" + obj.payload + "$", "i");
 
             patternCatcher.push({
                 pattern: re,
@@ -27,15 +27,26 @@ var LetteredOptionsTemplate = BaseTemplate.extend({
         patternCatcher.push({
             default: true,
             callback: function(response, convo) {
-                convo.repeat();
+
+                if (stateManager.context['help-text']) {
+
+                    convo.sayFirst("Hint: " + stateManager.context['help-text']);
+
+                    convo.repeat();
+
+                } else {
+                    convo.repeat();
+                }
+
                 convo.next();
+
             }
         });
 
         return patternCatcher;
     },
 
-    getURIForResponse : function(stateManager, payload) {
+    getURIForResponse: function(stateManager, payload) {
 
         payload = payload.toLowerCase();
 

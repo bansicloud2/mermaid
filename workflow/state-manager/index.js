@@ -5,25 +5,6 @@ var Q = require("q");
 var Hooks = require("./hooks");
 var Helpers = require("./helpers");
 
-var _getParser = function(type) {
-
-    /*
-       TODO: What's the performance implications of doing a require each time
-       We should be Lazy Loading here...
-    */
-
-    try {
-        var Parser = require("./templates/" + type);
-    } catch (e) {
-        logger.error(e);
-    }
-
-    var parser = new Parser();
-
-    return parser;
-
-};
-
 var _getInfo = function(base_data, opts) {
 
     var info = [];
@@ -113,7 +94,7 @@ StateManager.prototype.init = function(base_data, options) {
 
 StateManager.prototype.messagesGenerator = function() {
 
-    var parser = _getParser(this.context.type);
+    var parser = this.app.mermaid.getTemplate(this.context.type);
 
     var messages = [];
 
@@ -178,7 +159,7 @@ StateManager.prototype.patternCatcherGenerator = function() {
 
     var self = this;
 
-    var parser = _getParser(self.context.type);
+    var parser = this.app.mermaid.getTemplate(this.context.type);
 
     logger.info("Using %s parser.", self.context.type);
 
@@ -194,7 +175,7 @@ StateManager.prototype.getURIForResponse = function(response) {
 
     var self = this;
 
-    var parser = _getParser(self.context.type);
+    var parser = this.app.mermaid.getTemplate(this.context.type);
 
     var uri = parser.getURIForResponse(self, response);
 
@@ -207,7 +188,7 @@ StateManager.prototype.getURIForResponse = function(response) {
 StateManager.prototype.getEnd = function(callback) {
 
 
-    var parser = _getParser(this.context.type);
+    var parser = this.app.mermaid.getTemplate(this.context.type);
 
     var callback = callback || ((err, uri) => {
 
@@ -221,7 +202,7 @@ StateManager.prototype.getEnd = function(callback) {
     var end = parser.getEnd(this, callback);
 
     //Apply Hooks
-    
+
     if (this.context["after-hooks"]) {
         var afterHooks = this.context["after-hooks"];
         var hooks = new Hooks(this.app, this.context, afterHooks);

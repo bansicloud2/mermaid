@@ -41,7 +41,7 @@ var BaseTemplate = Class.extend({
 
                     async.eachSeries(stateManager.context.validators, function(validator, done) {
 
-                        var validator = new Validator(validator, stateManager.context.uri);
+                        var validator = new Validator(stateManager.app, validator, stateManager.context.uri);
 
                         validator.validate(value, function(err, overrideValue) {
 

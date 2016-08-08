@@ -52,6 +52,79 @@ var getData = function(directory) {
     return data;
 }
 
+
+var getValidators = function(localValidatorsDirectory) {
+
+    var validators = {};
+
+    var directory = __dirname + "/workflow/state-manager/validator/validators";
+
+    logger.info("Setting up validators...");
+
+    var baseValidators = walkSync(directory);
+
+    baseValidators.forEach(function(file) {
+
+        if (path.extname(file) === ".js") {
+
+            file = directory + "/" + file;
+
+            var validator = require(file);
+
+            var name = path.basename(file, '.js')
+
+            validators[name] = validator;
+        }
+    });
+
+    var localValidators = walkSync(localValidatorsDirectory)
+
+    localValidators.forEach(function(file) {
+
+        if (path.extname(file) === ".js") {
+
+            file = localValidatorsDirectory + "/" + file;
+
+            var validator = require(file);
+
+            var name = path.basename(file, '.js')
+
+            validators[name] = validator;
+        }
+    });
+
+    return validators;
+
+}
+
+var getTemplates = function(directory) {
+
+    var templates = {};
+
+    directory = directory || __dirname + "/workflow/state-manager/templates";
+
+    logger.info("Setting up templates...");
+
+    var baseTemplates = walkSync(directory);
+
+    baseTemplates.forEach(function(file) {
+
+        if (path.extname(file) === ".js") {
+
+            file = directory + "/" + file;
+
+            var template = require(file);
+
+            var name = path.basename(file, '.js')
+
+            templates[name] = template;
+        }
+    });
+
+    return templates;
+
+};
+
 var setupFacebook = function(config) {
 
     var f = facebook(config)
@@ -68,7 +141,7 @@ var setupFacebook = function(config) {
         }
     });
 
-}
+};
 
 
 module.exports = function(config, mermaidMethods) {
@@ -82,6 +155,10 @@ module.exports = function(config, mermaidMethods) {
     app.config = config;
 
     app.data = getData(config.data_directory);
+
+    app.mermaid.validators = getValidators(config.validators_directory);
+
+    app.mermaid.templates = getTemplates();
 
     if (config.facebook) {
         setupFacebook(config);
@@ -126,5 +203,17 @@ module.exports = function(config, mermaidMethods) {
         return findConvo(app.mermaid[service], id);
 
     };
+
+    app.mermaid.getTemplate = function(type) {
+        return new app.mermaid.templates[type]();
+    }
+
+    app.mermaid.use = function(plugin) {
+
+        app.mermaid.templates = Object.assign(app.mermaid.templates, getTemplates(plugin.config.templateDirectory));
+
+    };
+
+    return app.mermaid;
 
 };
