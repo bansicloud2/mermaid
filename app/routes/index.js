@@ -7,7 +7,13 @@ module.exports = function(app, config) {
 
     app.get('/', function(req, res) {
 
-        res.render('lander.ejs',{
+        res.render('lander.ejs');
+
+    });
+
+    app.get('/slack', function(req, res) {
+
+        res.render('slack.ejs',{
           SLACK_CLIENT_ID : config.slack.SLACK_CLIENT_ID,
           SLACK_REDIRECT: config.slack.SLACK_REDIRECT
         });
