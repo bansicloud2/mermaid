@@ -54,7 +54,7 @@ module.exports = function(app, config) {
 
         bot.type = SERVICE;
 
-        if (controller._bots[bot.config.token]) {
+        if (controller._bots[bot.config.id]) {
             // already online! do nothing.
         } else {
             bot.startRTM(function(err) {
