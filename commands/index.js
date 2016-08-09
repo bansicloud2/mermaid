@@ -262,7 +262,7 @@ Commands.prototype.get = function() {
 
                 var messenger = new Messenger(this.app, bot, message);
 
-                var routes = _.reduce(Object.keys(this.app.data), (result, route) => {
+                var routes = _.reduce(Object.keys(this.app.mermaid.data), (result, route) => {
                     return result += route + "\n"
                 }, "");
 

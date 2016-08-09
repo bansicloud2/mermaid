@@ -94,7 +94,7 @@ StateManager.prototype.init = function(base_data, options) {
 
 StateManager.prototype.messagesGenerator = function() {
 
-    var parser = this.app.mermaid.getTemplate(this.context.type);
+    var parser = this.app.mermaid.getType(this.context.type);
 
     var messages = [];
 
@@ -159,7 +159,7 @@ StateManager.prototype.patternCatcherGenerator = function() {
 
     var self = this;
 
-    var parser = this.app.mermaid.getTemplate(this.context.type);
+    var parser = this.app.mermaid.getType(this.context.type);
 
     logger.info("Using %s parser.", self.context.type);
 
@@ -175,7 +175,7 @@ StateManager.prototype.getURIForResponse = function(response) {
 
     var self = this;
 
-    var parser = this.app.mermaid.getTemplate(this.context.type);
+    var parser = this.app.mermaid.getType(this.context.type);
 
     var uri = parser.getURIForResponse(self, response);
 
@@ -188,7 +188,7 @@ StateManager.prototype.getURIForResponse = function(response) {
 StateManager.prototype.getEnd = function(callback) {
 
 
-    var parser = this.app.mermaid.getTemplate(this.context.type);
+    var parser = this.app.mermaid.getType(this.context.type);
 
     var callback = callback || ((err, uri) => {
 

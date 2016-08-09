@@ -28,18 +28,13 @@ var LetteredOptionsTemplate = BaseTemplate.extend({
             default: true,
             callback: function(response, convo) {
 
-                if (stateManager.context['help-text']) {
+                convo.stop();
 
-                    convo.sayFirst("Hint: " + stateManager.context['help-text']);
-
-                    convo.repeat();
-
-                } else {
-                    convo.repeat();
-                }
-
-                convo.next();
-
+                stateManager.workflowController.route(stateManager.context.uri, {
+                    "info": [
+                        "Hint: " + stateManager.context['help-text']
+                    ]
+                });
             }
         });
 

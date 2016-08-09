@@ -57,71 +57,109 @@ var getValidators = function(localValidatorsDirectory) {
 
     var validators = {};
 
-    var directory = __dirname + "/workflow/state-manager/validator/validators";
+    var directories = [__dirname + "/workflow/state-manager/validator/templates"];
+
+    if (localValidatorsDirectory) {
+        directories.push(localValidatorsDirectory);
+    }
 
     logger.info("Setting up validators...");
 
-    var baseValidators = walkSync(directory);
+    directories.forEach(function(directory) {
 
-    baseValidators.forEach(function(file) {
+        var files = walkSync(directory);
 
-        if (path.extname(file) === ".js") {
+        files.forEach(function(file) {
 
-            file = directory + "/" + file;
+            if (path.extname(file) === ".js") {
 
-            var validator = require(file);
+                file = directory + "/" + file;
 
-            var name = path.basename(file, '.js')
+                var validator = require(file);
 
-            validators[name] = validator;
-        }
-    });
+                var name = path.basename(file, '.js')
 
-    var localValidators = walkSync(localValidatorsDirectory)
+                validators[name] = validator;
+            }
+        });
 
-    localValidators.forEach(function(file) {
 
-        if (path.extname(file) === ".js") {
-
-            file = localValidatorsDirectory + "/" + file;
-
-            var validator = require(file);
-
-            var name = path.basename(file, '.js')
-
-            validators[name] = validator;
-        }
     });
 
     return validators;
 
 }
 
-var getTemplates = function(directory) {
+var getTypes = function(localTypesDirectory) {
+
+    logger.info("Setting up types...");
 
     var templates = {};
 
-    directory = directory || __dirname + "/workflow/state-manager/templates";
+    var directories = [__dirname + "/workflow/state-manager/types"];
 
-    logger.info("Setting up templates...");
+    if (localTypesDirectory) {
+        directories.push(localTypesDirectory);
+    }
 
-    var baseTemplates = walkSync(directory);
+    directories.forEach(function(directory) {
 
-    baseTemplates.forEach(function(file) {
+        var files = walkSync(directory);
 
-        if (path.extname(file) === ".js") {
+        files.forEach(function(file) {
 
-            file = directory + "/" + file;
+            if (path.extname(file) === ".js") {
 
-            var template = require(file);
+                file = directory + "/" + file;
 
-            var name = path.basename(file, '.js')
+                var template = require(file);
 
-            templates[name] = template;
-        }
-    });
+                var name = path.basename(file, '.js')
+
+                templates[name] = template;
+            }
+        });
+
+    })
 
     return templates;
+
+};
+
+var getHooks = function(localHooksDirectory) {
+
+    logger.info("Setting up hooks...");
+
+    var hooks = {};
+
+    var directories = [__dirname + "/workflow/state-manager/hooks/templates"];
+
+    if(localHooksDirectory){
+      directories.push(localHooksDirectory)
+    }
+
+    directories.forEach(function(directory) {
+
+        var files = walkSync(directory);
+
+        files.forEach(function(file) {
+
+            if (path.extname(file) === ".js") {
+
+                file = directory + "/" + file;
+
+                var hook = require(file);
+
+                var name = path.basename(file, '.js')
+
+                hooks[name] = hook;
+            }
+        });
+
+
+    });
+
+    return hooks;
 
 };
 
@@ -154,11 +192,13 @@ module.exports = function(config, mermaidMethods) {
 
     app.config = config;
 
-    app.data = getData(config.data_directory);
+    app.mermaid.data = getData(config.data_directory);
 
     app.mermaid.validators = getValidators(config.validators_directory);
 
-    app.mermaid.templates = getTemplates();
+    app.mermaid.types = getTypes(config.types_directory);
+
+    app.mermaid.hooks = getHooks(config.hooks_directory);
 
     if (config.facebook) {
         setupFacebook(config);
@@ -204,13 +244,13 @@ module.exports = function(config, mermaidMethods) {
 
     };
 
-    app.mermaid.getTemplate = function(type) {
-        return new app.mermaid.templates[type]();
+    app.mermaid.getType = function(name) {
+        return new app.mermaid.types[name]();
     }
 
     app.mermaid.use = function(plugin) {
 
-        app.mermaid.templates = Object.assign(app.mermaid.templates, getTemplates(plugin.config.templateDirectory));
+        app.mermaid.templates = Object.assign(app.mermaid.templates, getTypes(plugin.config.types_directory));
 
     };
 

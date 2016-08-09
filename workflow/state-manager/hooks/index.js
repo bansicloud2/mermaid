@@ -1,12 +1,6 @@
 var logger = require("../../../logger");
 var async = require("async");
 
-var HOOKS = {
-    "mark-completed": require("./mark-completed"),
-    "notify-team": require("./notify-team"),
-
-}
-
 var Hooks = function(app, context, hooks) {
     this.app = app;
     this.context = context;
@@ -20,7 +14,7 @@ Hooks.prototype.wrapFn = function(fn) {
 
             var type = data.type;
 
-            var hook = HOOKS[type];
+            var hook = this.app.mermaid.hooks[type];
 
             hook.call(this, done);
 
@@ -37,7 +31,7 @@ Hooks.prototype.run = function(){
 
       var type = data.type;
 
-      var hook = HOOKS[type];
+      var hook = this.app.mermaid.hooks[type];
 
       hook.call(this, done);
 

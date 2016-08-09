@@ -73,7 +73,7 @@ WorkflowController.prototype.route = function(uri, overrides) {
 
     logger.info("Hit route: %s with options: %s", uriObj.uri, JSON.stringify(uriObj.options));
 
-    var data = this.app.data[uriObj.uri];
+    var data = this.app.mermaid.data[uriObj.uri];
 
     if (!data) {
         return logger.error("No route with this name: %s", uriObj.uri)
