@@ -5,8 +5,8 @@ var Schema = mongoose.Schema,
 
 
 var SessionSchema = new Schema({
-    morning_checkin_time: Date,
-    evening_checkin_time: Date
+    next_morning_checkin_time: Date,
+    next_evening_checkin_time: Date
 }, {
     _id : false,
     strict: false
