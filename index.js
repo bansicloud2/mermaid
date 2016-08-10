@@ -250,7 +250,7 @@ module.exports = function(config, mermaidMethods) {
 
     app.mermaid.use = function(plugin) {
 
-        app.mermaid.templates = Object.assign(app.mermaid.templates, getTypes(plugin.config.types_directory));
+        plugin.setup.call(app);
 
     };
 

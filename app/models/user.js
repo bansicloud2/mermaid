@@ -3,6 +3,15 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
+
+var SessionSchema = new Schema({
+    morning_checkin_time: Date,
+    evening_checkin_time: Date
+}, {
+    _id : false,
+    strict: false
+});
+
 var UserSchema = new Schema({
     id: {
         type: String,
@@ -24,7 +33,8 @@ var UserSchema = new Schema({
     bot_disabled: {
         type: Boolean,
         default: false
-    }
+    },
+    session: SessionSchema
 }, {
     strict: false,
     minimize: false

@@ -199,16 +199,18 @@ StateManager.prototype.getEnd = function(callback) {
         this.workflowController.route(uri);
     });
 
+    if (this.context["after-hooks"]) {
+
+        var originalCallback = callback;
+
+        var afterHooks = this.context["after-hooks"];
+        var hooks = new Hooks(this.app, this.context, afterHooks)
+
+        callback = hooks.wrapFn(callback);
+    }
+
     var end = parser.getEnd(this, callback);
 
-    //Apply Hooks
-
-    if (this.context["after-hooks"]) {
-        var afterHooks = this.context["after-hooks"];
-        var hooks = new Hooks(this.app, this.context, afterHooks);
-
-        end = hooks.wrapFn(end);
-    }
 
     return end;
 };

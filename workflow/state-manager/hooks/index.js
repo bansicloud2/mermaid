@@ -7,16 +7,24 @@ var Hooks = function(app, context, hooks) {
     this.hookObjects = hooks;
 };
 
-Hooks.prototype.wrapFn = function(fn) {
+Hooks.prototype._wrapFn = function(fn) {
     return (...args) => {
 
         async.eachSeries(this.hookObjects, (data, done) => {
 
-            var type = data.type;
+            try {
+                var type = data.type;
 
-            var hook = this.app.mermaid.hooks[type];
+                logger.debug('Type: %s', type)
 
-            hook.call(this, done);
+                var hook = this.app.mermaid.hooks[type];
+
+                hook.call(this, done);
+
+            } catch (e) {
+                logger.error(e);
+                done(e);
+            }
 
         }, () => {
 
@@ -25,20 +33,30 @@ Hooks.prototype.wrapFn = function(fn) {
     }
 };
 
-Hooks.prototype.run = function(){
+Hooks.prototype.wrapFn = function(fn) {
+    return (...args) => {
+        return this.run(function() {
+            fn.apply(null, args);
+        });
+    };
+}
 
-  async.eachSeries(this.hookObjects, (data, done) => {
+Hooks.prototype.run = function(cb) {
 
-      var type = data.type;
+    async.eachSeries(this.hookObjects, (data, done) => {
 
-      var hook = this.app.mermaid.hooks[type];
+        var type = data.type;
 
-      hook.call(this, done);
+        var hook = this.app.mermaid.hooks[type];
 
-  }, () => {
+        hook.call(this, done);
 
-      logger.debug("Hooks run.");
-  })
+    }, () => {
+
+        logger.debug("Hooks run.");
+
+        return cb && cb();
+    })
 
 }
 
