@@ -5,7 +5,9 @@ var Schema = mongoose.Schema,
 
 var CheckInSchema = new Schema({
     id: String,
-    desc: String,
+    active: {
+      type: Boolean
+    },
     date: Date,
     question_set: Number
 }, {
