@@ -14,7 +14,7 @@ var utils = require("../utils");
 var Q = require("q");
 var Hooks = require("./state-manager/hooks");
 
-var WorkflowController = function(app, controller, bot, message, commandsForPatternCatcher) {
+var WorkflowController = function(app, controller, bot, message) {
 
     var self = this;
 
@@ -22,7 +22,6 @@ var WorkflowController = function(app, controller, bot, message, commandsForPatt
     this.controller = controller;
     this.bot = bot;
     this.message = message;
-    this.commandsForPatternCatcher = commandsForPatternCatcher;
     this.messenger = new Messenger(app, bot, message);
 
 };
@@ -88,7 +87,7 @@ WorkflowController.prototype.route = function(uri, overrides) {
         return this.route(data["ref-uri"], data.overrides);
     }
 
-    var stateManager = new StateManager(this.controller, this, this.bot, this.message, this.commandsForPatternCatcher);
+    var stateManager = new StateManager(this.controller, this, this.bot, this.message);
 
     stateManager.init(data, uriObj.options).then(() => {
 

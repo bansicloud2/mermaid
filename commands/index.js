@@ -29,7 +29,7 @@ Commands.prototype.init = function(events) {
     }
 };
 
-Commands.prototype.getCommandsForPatternCatcher = function(bot, message) {
+Commands.prototype.getCommandsForPatternCatcher = function(bot) {
 
     var patterns = [];
 
@@ -87,9 +87,7 @@ Commands.prototype.get = function() {
 
                 if (service && message.user) {
 
-                    var commandsForPatternCatcher = this.getCommandsForPatternCatcher(bot, message);
-
-                    var workflowController = new WorkflowController(this.app, this.controller, bot, message, commandsForPatternCatcher);
+                    var workflowController = new WorkflowController(this.app, this.controller, bot, message);
 
                     var messenger = new Messenger(this.app, bot, message);
 
@@ -118,9 +116,7 @@ Commands.prototype.get = function() {
 
                 if (service && message.user) {
 
-                    var commandsForPatternCatcher = this.getCommandsForPatternCatcher(bot, message);
-
-                    var workflowController = new WorkflowController(this.app, this.controller, bot, message, commandsForPatternCatcher);
+                    var workflowController = new WorkflowController(this.app, this.controller, bot, message);
 
                     var messenger = new Messenger(this.app, bot, message);
 
@@ -182,9 +178,7 @@ Commands.prototype.get = function() {
                 var service = Utils.getService(bot);
                 var userId = Utils.getUserId(service, message.user);
 
-                var commandsForPatternCatcher = this.getCommandsForPatternCatcher(bot, message);
-
-                var workflowController = new WorkflowController(this.app, this.controller, bot, message, commandsForPatternCatcher);
+                var workflowController = new WorkflowController(this.app, this.controller, bot, message);
 
                 if (service && message.user) {
 
@@ -211,9 +205,7 @@ Commands.prototype.get = function() {
                 var service = Utils.getService(bot);
                 var userId = Utils.getUserId(service, message.user);
 
-                var commandsForPatternCatcher = this.getCommandsForPatternCatcher(bot, message);
-
-                var workflowController = new WorkflowController(this.app, this.controller, bot, message, commandsForPatternCatcher);
+                var workflowController = new WorkflowController(this.app, this.controller, bot, message);
 
                 if (service && message.user) {
 
@@ -301,9 +293,7 @@ Commands.prototype.get = function() {
 
                         var route = user.triggers[message.text];
 
-                        var commandsForPatternCatcher = this.getCommandsForPatternCatcher(bot, message);
-
-                        var workflowController = new WorkflowController(this.app, this.controller, bot, message, commandsForPatternCatcher);
+                        var workflowController = new WorkflowController(this.app, this.controller, bot, message);
 
                         workflowController.route(route);
 

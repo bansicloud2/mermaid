@@ -19,7 +19,7 @@ var _getInfo = function(base_data, opts) {
 
 };
 
-var StateManager = function(controller, workflowController, bot, message, commandsForPatternCatcher) {
+var StateManager = function(controller, workflowController, bot, message) {
 
     var self = this;
 
@@ -28,7 +28,6 @@ var StateManager = function(controller, workflowController, bot, message, comman
     self.workflowController = workflowController;
     self.bot = bot;
     self.message = message;
-    self.commandsForPatternCatcher = commandsForPatternCatcher;
     self.service = utils.getService(bot);
     self.userId = utils.getUserId(this.service, this.message.user)
 };
@@ -165,7 +164,7 @@ StateManager.prototype.patternCatcherGenerator = function() {
 
     var patternCatcher = parser.getPatternCatcher(self);
 
-    patternCatcher = patternCatcher.concat(self.commandsForPatternCatcher);
+    patternCatcher = patternCatcher.concat(this.bot.commandsForPatternCatcher);
 
     return patternCatcher;
 

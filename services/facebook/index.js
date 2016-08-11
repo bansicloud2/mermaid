@@ -15,6 +15,10 @@ module.exports = function(app, config) {
         verify_token: config.facebook.VERIFY_TOKEN
     });
 
+    var commands = (new Commands(app, controller));
+
+    commands.init(EVENTS);
+
     var bot = controller.spawn();
 
     bot.type = SERVICE;
@@ -23,6 +27,12 @@ module.exports = function(app, config) {
 
     controller.bot = bot;
 
+    controller.bot.commandsForPatternCatcher = commands.getCommandsForPatternCatcher(bot);
+
+    controller.getBot = function() {
+        return bot;
+    }
+
     controller.config.port = process.env.PORT;
     controller.startTicking();
     controller.createWebhookEndpoints(app, bot);
@@ -30,7 +40,6 @@ module.exports = function(app, config) {
     controller.middleware.receive.use(facebookCreateUserMiddleware(app));
     controller.middleware.receive.use(disableBotForUserMiddleware(app, SERVICE));
 
-    (new Commands(app, controller)).init(EVENTS);
 
     app.mermaid.facebook = controller;
 

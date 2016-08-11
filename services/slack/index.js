@@ -14,12 +14,16 @@ module.exports = function(app, config) {
 
     var controller = Botkit.slackbot({
         storage: mongoStorage(app),
-        interactive_replies : true
+        interactive_replies: true
     }).configureSlackApp({
         clientId: config.slack.SLACK_CLIENT_ID,
         clientSecret: config.slack.SLACK_CLIENT_SECRET,
         scopes: ['bot']
     });
+
+    var commands = new Commands(app, controller)
+
+    commands.init(EVENTS);
 
     controller.type = SERVICE;
 
@@ -49,10 +53,14 @@ module.exports = function(app, config) {
         return controller._bots[teamId];
     };
 
+    controller.getBot = function(teamId) {
+        return controller._bots[teamId];
+    }
 
     controller.on('create_bot', function(bot, botConfig) {
 
         bot.type = SERVICE;
+        bot.commandsForPatternCatcher = commands.getCommandsForPatternCatcher(bot);
 
         if (controller._bots[bot.config.id]) {
             // already online! do nothing.
@@ -88,8 +96,6 @@ module.exports = function(app, config) {
     });
 
 
-    (new Commands(app, controller)).init(EVENTS);
-
     // Handle events related to the websocket connection to Slack
     controller.on('rtm_open', function(bot) {
         logger.info('** The RTM api just connected!');
@@ -123,6 +129,7 @@ module.exports = function(app, config) {
                         logger.error('Error connecting bot to Slack:', err);
                     } else {
                         bot.type = SERVICE;
+                        bot.commandsForPatternCatcher = commands.getCommandsForPatternCatcher(bot);
                         controller.trackBot(bot);
                     }
                 });
