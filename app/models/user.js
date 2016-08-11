@@ -45,11 +45,11 @@ var UserSchema = new Schema({
         type: Boolean,
         default: false
     },
-    session: SessionSchema
+    session: SessionSchema,
+    system: Object
 }, {
     strict: false,
     minimize: false
 });
-
 
 module.exports = mongoose.model('User', UserSchema);

@@ -43,7 +43,7 @@ StateManager.prototype.init = function(base_data, options) {
 
     _.extend(self.context, base_data);
 
-    self.context.info = _getInfo(base_data, options);
+    self.context.info = _getInfo(base_data, options || {});
 
     self.context.service = self.service;
 

@@ -87,9 +87,17 @@ WorkflowController.prototype.route = function(uri, overrides) {
         return this.route(data["ref-uri"], data.overrides);
     }
 
+    return this.runStageWithData(data, uriObj.options);
+};
+
+
+WorkflowController.prototype.runStageWithData = function(data, options) {
+
+    var deferred = Q.defer();
+
     var stateManager = new StateManager(this.controller, this, this.bot, this.message);
 
-    stateManager.init(data, uriObj.options).then(() => {
+    stateManager.init(data, options).then(() => {
 
         logger.info("State manager init complete.");
 
@@ -98,7 +106,7 @@ WorkflowController.prototype.route = function(uri, overrides) {
                 this.handleApiCall(stateManager);
                 break;
             case "update-data":
-                this.handleUpdateData(stateManager, uriObj.options);
+                this.handleUpdateData(stateManager, options);
                 break;
             default:
                 this.handleStage(stateManager);
@@ -112,8 +120,7 @@ WorkflowController.prototype.route = function(uri, overrides) {
 
 
     return deferred.promise;
-
-};
+}
 
 
 WorkflowController.prototype.handleStage = function(stateManager, next) {
