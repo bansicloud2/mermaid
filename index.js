@@ -4,6 +4,7 @@ var logger = require("./logger");
 var async = require("async");
 var facebook = require("./lib/facebook");
 var lighttunnel = require("./lib/lighttunnel");
+var WorkflowController = require("./workflow");
 
 
 var findConvo = function(botkit, id) {
@@ -134,8 +135,8 @@ var getHooks = function(localHooksDirectory) {
 
     var directories = [__dirname + "/workflow/state-manager/hooks/templates"];
 
-    if(localHooksDirectory){
-      directories.push(localHooksDirectory)
+    if (localHooksDirectory) {
+        directories.push(localHooksDirectory)
     }
 
     directories.forEach(function(directory) {
@@ -248,10 +249,27 @@ module.exports = function(config, mermaidMethods) {
         return new app.mermaid.types[name]();
     }
 
+    app.mermaid.getWorkflowControllerForUser = function(user) {
+
+        var type = user.type;
+
+        var controller = app.mermaid[type];
+
+        var bot;
+
+        if (type === "slack") {
+            bot = controller.getBot(user.platform.team_id);
+        } else {
+            bot = controller.getBot()
+        }
+
+        return new WorkflowController(app, controller, bot, user.last_botkit_message_obj)
+
+    }
+
     app.mermaid.use = function(plugin) {
 
         plugin.setup.call(app);
-
     };
 
     return app.mermaid;
