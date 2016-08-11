@@ -3,12 +3,21 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
+var CheckInSchema = new Schema({
+    id: String,
+    desc: String,
+    date: Date,
+    question_set: Number
+}, {
+    _id: false,
+    strict: false
+});
+
 
 var SessionSchema = new Schema({
-    next_morning_checkin_time: Date,
-    next_evening_checkin_time: Date
+    checkins: [CheckInSchema]
 }, {
-    _id : false,
+    _id: false,
     strict: false
 });
 
