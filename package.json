@@ -1,6 +1,6 @@
 {
   "name": "@sagebots/mermaid",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "DSL for Chatbots",
   "main": "lib/index.js",
   "scripts": {
