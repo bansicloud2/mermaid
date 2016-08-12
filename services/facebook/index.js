@@ -15,7 +15,7 @@ module.exports = function(app, config) {
         verify_token: config.facebook.VERIFY_TOKEN
     });
 
-    var commands = (new Commands(app, controller));
+    var commands = new Commands(app, controller);
 
     commands.init(EVENTS);
 

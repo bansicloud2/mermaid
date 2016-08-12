@@ -164,6 +164,21 @@ var getHooks = function(localHooksDirectory) {
 
 };
 
+var getCommands = function(pathname, app) {
+
+    let commands = {};
+
+    logger.info("Setting up commands...");
+
+    if (pathname) {
+        commands = require(pathname)(app);
+    }
+
+    return commands;
+
+
+}
+
 var setupFacebook = function(config) {
 
     var f = facebook(config)
@@ -200,6 +215,8 @@ module.exports = function(config, mermaidMethods) {
     app.mermaid.types = getTypes(config.types_directory);
 
     app.mermaid.hooks = getHooks(config.hooks_directory);
+
+    app.mermaid.commands = getCommands(config.commands_pathname, app);
 
     if (config.facebook) {
         setupFacebook(config);

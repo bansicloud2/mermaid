@@ -7,35 +7,29 @@ var _ = require("lodash");
 var Commands = function(app, controller) {
     this.app = app;
     this.controller = controller;
+    this.addedCommands = this.app.mermaid.commands;
+
 };
 
 Commands.prototype.init = function(events) {
 
-    var commands = this.get(this.app, this.controller);
+    var commands = this.get(this.addedCommands);
 
-    for (var key in commands) {
+    commands.forEach((command) => {
 
-        var command = commands[key];
+        this.controller.hears(command.options, events, command.action);
 
-        logger.info("Setting up command: %s", key);
+    })
 
-        if (command.options) {
-            this.controller.hears(command.options, events, command.action);
-
-        } else {
-            this.controller.on(events, command.action);
-        }
-
-    }
 };
 
 Commands.prototype.getCommandsForPatternCatcher = function(bot) {
 
     var patterns = [];
 
-    var commands = this.get(this.app, this.controller);
+    var commands = this.get(this.addedCommands);
 
-    _.each(commands, (command, key) => {
+    commands.forEach((command) => {
 
         if (command.options) {
 
@@ -50,8 +44,6 @@ Commands.prototype.getCommandsForPatternCatcher = function(bot) {
                         convo.next();
 
                         setTimeout(() => {
-
-                            logger.debug(key);
 
                             if (command.action) {
                                 command.action.call(this, bot, response);
@@ -73,10 +65,9 @@ Commands.prototype.getCommandsForPatternCatcher = function(bot) {
 
 };
 
-Commands.prototype.get = function() {
+Commands.prototype.get = function(addedCommands) {
 
-    var commands = {
-        "start": {
+    var commands = [{
             options: [/hello/gi, /^hi$/gi, /$start/gi, /go$/gi, /^hey/gi, /yo$/],
 
             exit_response: "✨✨✨",
@@ -99,9 +90,7 @@ Commands.prototype.get = function() {
                 }
 
             }
-        },
-
-        "goto": {
+        }, {
             options: ["goto (.*)$"],
 
             exit_response: this.app.config.goto_message,
@@ -134,9 +123,7 @@ Commands.prototype.get = function() {
                 }
 
             }
-        },
-
-        "pwd": {
+        }, {
 
             options: [/where am i$/gi, /^current path$/gi, /^pwd$/gi],
 
@@ -166,9 +153,7 @@ Commands.prototype.get = function() {
 
             }
 
-        },
-
-        "last": {
+        }, {
             options: [/^last$/gi, /^back$/gi, /^b$/gi],
 
             exit_response: "Taking you to last stage in workflow...",
@@ -193,9 +178,7 @@ Commands.prototype.get = function() {
                 }
 
             }
-        },
-
-        "restart": {
+        }, {
             options: [/^restart$/gi, /^refresh$/gi, /^reset$/gi],
 
             exit_response: this.app.config.restart_message,
@@ -217,23 +200,19 @@ Commands.prototype.get = function() {
 
                     logger.debug("Updating userId : %s with following query: %s", userId, JSON.stringify(query))
 
-                    this.app.service("/v1/users").update(userId, query, {}).then(function() {
+                    this.app.service("/v1/users").update(userId, query).then(function() {
 
                         workflowController.route("/");
 
-                    }.bind(this));
+                    });
 
                 }
 
             }
-        },
-
-        "quit": {
-            options: [/^quit$/gi, /^stop$/gi, /^bye$/gi],
+        }, {
+            options: [/^quit$/gi, /^bye$/gi],
             exit_response: "Bye Bye 👋👋"
-        },
-
-        "help": {
+        }, {
             options: [/^help$/gi],
             action: (bot, message) => {
 
@@ -245,9 +224,7 @@ Commands.prototype.get = function() {
                     text: "I've notified my team of experts. Someone should assist you shortly."
                 });
             }
-        },
-
-        "show-routes": {
+        }, {
             options: [/^show routes$/gi],
             exit_response: "You better be an admin...",
             action: (bot, message) => {
@@ -264,51 +241,52 @@ Commands.prototype.get = function() {
 
             }
 
-        },
-
-        "default": {
-            action: (bot, message) => {
-
-                var sendDefaultMessage = () => {
-
-                    var messenger = new Messenger(this.app, bot, message);
-
-                    messenger.recordMessageInDB(message, "received", null);
-
-                    messenger.reply({
-                        text: this.app.config.opening_message
-                    }, "/");
-
-                }
-
-                logger.debug("Running default command");
-
-                var service = Utils.getService(bot);
-
-                var userId = Utils.getUserId(service, message.user);
-
-                this.app.service("/v1/users").get(userId).then((user) => {
-
-                    if (user && user.triggers && user.triggers[message.text]) {
-
-                        var route = user.triggers[message.text];
-
-                        var workflowController = new WorkflowController(this.app, this.controller, bot, message);
-
-                        workflowController.route(route);
-
-                    } else {
-                        sendDefaultMessage();
-                    }
-
-                }).catch((e) => console.error(e));
-
-            }
         }
 
-    };
+    ];
 
-    return commands;
+    var defaultCommand = [{
+        options: ['.*'],
+        action: (bot, message) => {
+
+            var sendDefaultMessage = () => {
+
+                var messenger = new Messenger(this.app, bot, message);
+
+                messenger.recordMessageInDB(message, "received", null);
+
+                messenger.reply({
+                    text: this.app.config.opening_message
+                }, "/");
+
+            }
+
+            logger.debug("Running default command");
+
+            var service = Utils.getService(bot);
+
+            var userId = Utils.getUserId(service, message.user);
+
+            this.app.service("/v1/users").get(userId).then((user) => {
+
+                if (user && user.triggers && user.triggers[message.text]) {
+
+                    var route = user.triggers[message.text];
+
+                    var workflowController = new WorkflowController(this.app, this.controller, bot, message);
+
+                    workflowController.route(route);
+
+                } else {
+                    sendDefaultMessage();
+                }
+
+            }).catch((e) => console.error(e));
+
+        }
+    }]
+
+    return commands.concat(addedCommands, defaultCommand);
 
 }
 

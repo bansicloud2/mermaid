@@ -18,7 +18,7 @@ module.exports = function(app, config) {
         debug: false
     });
 
-    var commands = (new Commands(app, controller));
+    var commands = new Commands(app, controller);
 
     commands.init(EVENTS);
 
