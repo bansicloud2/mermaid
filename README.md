@@ -10,7 +10,24 @@ Mermaid is a cross-platform Data Description Language for rapid development & co
 
   - Using a http-route based system to make it easy to manage state.
 
-- REST API (see below)
+
+- Full-Featured RESTful API
+
+  - Every Sage install includes a full-featured REST API to allow for easy system integration.
+
+  - The REST API can be found at [PROTOCOL]:[HOSTNAME]:[PORT]/api/v1/{{resource}}
+
+  - For example for a local install on port 3000:
+
+    - You can view user data here: <http://localhost:3000/api/v1/users>
+    - You can view messages data here: <http://localhost:3000/api/v1/messages>
+
+Additionally, you can also use all the HTTP verbs:
+
+- **GET**
+- **POST**
+- **PUT**
+- **DELETE**
 
 - Universal Commands
 
@@ -84,7 +101,7 @@ Best to use an example to illustrate how the language works:
 
 Each property is used to collectively define the behavior of the stage.
 
-Here's an explanation of the 6 properties shown above:
+Here's an explanation of the 7 properties shown above:
 
 **uri** - This is the ID (String) for the stage.
 
