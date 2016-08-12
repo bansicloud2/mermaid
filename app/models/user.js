@@ -4,7 +4,7 @@ var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
 var CheckInSchema = new Schema({
-    id: String,
+    code: String,
     active: {
       type: Boolean
     },

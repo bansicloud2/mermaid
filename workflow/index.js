@@ -179,7 +179,7 @@ WorkflowController.prototype.handleStage = function(stateManager, next) {
 
     } else {
 
-        self.bot.startConversation(self.message, function(err, convo) {
+        self.bot.startConversation(self.message, (err, convo) => {
 
             if (err) {
 
@@ -198,6 +198,14 @@ WorkflowController.prototype.handleStage = function(stateManager, next) {
                         self.messenger.reply(message, context_uri);
 
                     });
+
+                    //Apply Hooks
+
+                    if (stateManager.context["after-hooks"]) {
+                        var afterHooks = stateManager.context["after-hooks"];
+                        var hooks = new Hooks(this.app, stateManager.context, afterHooks);
+                        hooks.run();
+                    }
 
                 } else {
 
