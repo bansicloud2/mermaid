@@ -27,7 +27,7 @@ Commands.prototype.getCommandsForPatternCatcher = function(bot) {
 
     var patterns = [];
 
-    var commands = this.get(this.addedCommands);
+    var commands = this.get(this.addedCommands, false);
 
     commands.forEach((command) => {
 
@@ -65,7 +65,7 @@ Commands.prototype.getCommandsForPatternCatcher = function(bot) {
 
 };
 
-Commands.prototype.get = function(addedCommands) {
+Commands.prototype.get = function(addedCommands, includeDefault = true) {
 
     var commands = [{
             options: [/hello/gi, /^hi$/gi, /$start/gi, /go$/gi, /^hey/gi, /yo$/],
@@ -245,48 +245,53 @@ Commands.prototype.get = function(addedCommands) {
 
     ];
 
-    var defaultCommand = [{
-        options: ['.*'],
-        action: (bot, message) => {
+    commands = commands.concat(addedCommands);
 
-            var sendDefaultMessage = () => {
+    if (includeDefault) {
+        var defaultCommand = [{
+            options: ['.*'],
+            action: (bot, message) => {
 
-                var messenger = new Messenger(this.app, bot, message);
+                var sendDefaultMessage = () => {
 
-                messenger.recordMessageInDB(message, "received", null);
+                    var messenger = new Messenger(this.app, bot, message);
 
-                messenger.reply({
-                    text: this.app.config.opening_message
-                }, "/");
+                    messenger.recordMessageInDB(message, "received", null);
 
-            }
+                    messenger.reply({
+                        text: this.app.config.opening_message
+                    }, "/");
 
-            logger.debug("Running default command");
-
-            var service = Utils.getService(bot);
-
-            var userId = Utils.getUserId(service, message.user);
-
-            this.app.service("/v1/users").get(userId).then((user) => {
-
-                if (user && user.triggers && user.triggers[message.text]) {
-
-                    var route = user.triggers[message.text];
-
-                    var workflowController = new WorkflowController(this.app, this.controller, bot, message);
-
-                    workflowController.route(route);
-
-                } else {
-                    sendDefaultMessage();
                 }
 
-            }).catch((e) => console.error(e));
+                logger.debug("Running default command");
 
-        }
-    }]
+                var service = Utils.getService(bot);
 
-    return commands.concat(addedCommands, defaultCommand);
+                var userId = Utils.getUserId(service, message.user);
+
+                this.app.service("/v1/users").get(userId).then((user) => {
+
+                    if (user && user.triggers && user.triggers[message.text]) {
+
+                        var route = user.triggers[message.text];
+
+                        var workflowController = new WorkflowController(this.app, this.controller, bot, message);
+
+                        workflowController.route(route);
+
+                    } else {
+                        sendDefaultMessage();
+                    }
+
+                }).catch((e) => console.error(e));
+
+            }
+        }]
+        commands = commands.concat(defaultCommand);
+    }
+
+    return commands;
 
 }
 
