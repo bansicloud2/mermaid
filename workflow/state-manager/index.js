@@ -241,7 +241,9 @@ StateManager.prototype.getNextUri = function() {
 
 StateManager.prototype.isFinalMessage = function() {
 
-    return this.context.final;
+    var parser = this.app.mermaid.getType(this.context.type);
+
+    return this.context.final || parser.isFinalMessage;
 }
 
 StateManager.prototype.isContainer = function() {

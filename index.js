@@ -5,6 +5,7 @@ var async = require("async");
 var facebook = require("./lib/facebook");
 var lighttunnel = require("./lib/lighttunnel");
 var WorkflowController = require("./workflow");
+var Messenger = require("./messenger");
 
 
 var findConvo = function(botkit, id) {
@@ -262,6 +263,10 @@ module.exports = function(config, mermaidMethods) {
 
     };
 
+    app.mermaid.hasConversationActive = function(user){
+      return !!user.last_botkit_message_obj.convo_id;
+    }
+
     app.mermaid.getType = function(name) {
         return new app.mermaid.types[name]();
     }
@@ -281,6 +286,24 @@ module.exports = function(config, mermaidMethods) {
         }
 
         return new WorkflowController(app, controller, bot, user.last_botkit_message_obj)
+
+    }
+
+    app.mermaid.getMessengerForUser = function(user) {
+
+        var type = user.type;
+
+        var controller = app.mermaid[type];
+
+        var bot;
+
+        if (type === "slack") {
+            bot = controller.getBot(user.platform.team_id);
+        } else {
+            bot = controller.getBot()
+        }
+
+        return new Messenger(app, bot, user.last_botkit_message_obj);
 
     }
 

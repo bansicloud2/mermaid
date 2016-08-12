@@ -39,12 +39,25 @@ Messenger.prototype.addConvo = function(convo) {
 
     this.message.convo_id = convo.id;
     this.convo = convo;
+
+    this.app.service("/v1/users").update(this.userId, {
+        last_botkit_message_obj: this.message
+    }).then((user) => {
+        logger.info("Updated convo");
+    }).catch((e) => logger.error(e));
+
 };
 
 Messenger.prototype.removeConvo = function() {
 
     this.message.convo_id = null;
     this.convo = null;
+
+    this.app.service("/v1/users").update(this.userId, {
+        last_botkit_message_obj: this.message
+    }).then((user) => {
+        logger.info("Updated convo");
+    }).catch((e) => logger.error(e));
 };
 
 Messenger.prototype.reply = function(messageObj, context_uri, dontSave) {

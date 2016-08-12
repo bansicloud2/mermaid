@@ -125,15 +125,14 @@ WorkflowController.prototype.runStageWithData = function(data, options) {
 
 WorkflowController.prototype.handleStage = function(stateManager, next) {
 
-    var self = this;
 
     var context_uri = stateManager.getUri(),
         isFinalMessage = stateManager.isFinalMessage(),
         isContainer = stateManager.isContainer(),
         nextURL = stateManager.getNextUri();
 
-    if (self.isStageComplete(stateManager)) {
-        return next ? next() : self.route(nextURL);
+    if (this.isStageComplete(stateManager)) {
+        return next ? next() : this.route(nextURL);
     }
 
     //Apply Hooks
@@ -146,15 +145,15 @@ WorkflowController.prototype.handleStage = function(stateManager, next) {
 
     if (isContainer) {
 
-        self.messenger.onStart(stateManager.infoGenerator(), context_uri);
+        this.messenger.onStart(stateManager.infoGenerator(), context_uri);
 
-        async.eachSeries(stateManager.context.objects, function(data, next) {
+        async.eachSeries(stateManager.context.objects, (data, next) => {
 
             logger.debug("Data for child in container: %s", JSON.stringify(data, null, 4));
 
             stateManager.init(data, {}).then(() => {
 
-                self.handleStage(stateManager, next);
+                this.handleStage(stateManager, next);
 
             }).catch((error) => {
                 logger.error(error);
@@ -168,48 +167,53 @@ WorkflowController.prototype.handleStage = function(stateManager, next) {
 
                     var text = stateManager.context.post_info[i];
 
-                    self.reply({
+                    this.reply({
                         text: text
                     }, context_uri);
                 }
             }
 
-            self.route(nextURL);
+            this.route(nextURL);
         })
 
     } else {
 
-        self.bot.startConversation(self.message, (err, convo) => {
+        var parts = stateManager.parse(next);
 
-            if (err) {
+        if (isFinalMessage) {
 
-                logger.error(err);
+            parts.messages.forEach((message) => {
 
-            } else {
+                this.messenger.reply(message, context_uri);
 
-                self.messenger.addConvo(convo);
+            });
 
-                var parts = stateManager.parse(next);
+            if (stateManager.context.type === "redirect") {
+                this.route(nextURL);
+            }
 
-                if (isFinalMessage) {
+            //Apply Hooks
 
-                    parts.messages.forEach(function(message) {
+            if (stateManager.context["after-hooks"]) {
+                var afterHooks = stateManager.context["after-hooks"];
+                var hooks = new Hooks(this.app, stateManager.context, afterHooks);
+                hooks.run();
+            }
 
-                        self.messenger.reply(message, context_uri);
+        } else {
 
-                    });
+            this.bot.startConversation(this.message, (err, convo) => {
 
-                    //Apply Hooks
+                if (err) {
 
-                    if (stateManager.context["after-hooks"]) {
-                        var afterHooks = stateManager.context["after-hooks"];
-                        var hooks = new Hooks(this.app, stateManager.context, afterHooks);
-                        hooks.run();
-                    }
+                    logger.error(err);
 
                 } else {
 
-                    self.messenger.onStart(parts.info, context_uri);
+
+                    this.messenger.addConvo(convo);
+
+                    this.messenger.onStart(parts.info, context_uri);
 
                     for (var i = 0; i < parts.messages.length; i++) {
 
@@ -218,22 +222,24 @@ WorkflowController.prototype.handleStage = function(stateManager, next) {
 
                         if (isLastMessage) {
 
-                            self.messenger.ask(message, parts.pattern_catcher, context_uri);
+                            this.messenger.ask(message, parts.pattern_catcher, context_uri);
 
                         } else {
 
-                            self.messenger.reply(message, context_uri);
+                            this.messenger.reply(message, context_uri);
 
                         }
                     }
 
-                    self.messenger.onEnd(parts.post_info, parts.end, context_uri);
+                    this.messenger.onEnd(parts.post_info, parts.end, context_uri);
 
                 }
 
-            }
 
-        });
+
+            });
+
+        }
 
     }
 
