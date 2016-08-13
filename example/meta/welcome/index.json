@@ -1,0 +1,10 @@
+{
+    "uri": "/welcome",
+    "info": [
+        "Hi there :) My name is mermaid."
+    ],
+    "prompt" : "To start us off politely, what is your name?",
+    "next-uri" : "/welcome/opt-in",
+    "type": "store-information",
+    "storage-property": "session.name"
+}

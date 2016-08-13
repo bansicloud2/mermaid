@@ -1,0 +1,10 @@
+{
+    "uri": "/misc/end-flow",
+    "prompt": "L8ter gater.",
+    "final": true,
+    "type": "termination",
+    "after-hooks": [{
+        "type": "notify-team",
+        "text": "Someone just ended the flow."
+    }]
+}

@@ -1,7 +1,7 @@
 {
   "name": "@sagebots/mermaid",
   "version": "1.0.9",
-  "description": "DSL for Chatbots",
+  "description": "JSON Puesdo-Language for Chatbots",
   "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

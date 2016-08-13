@@ -1,0 +1,10 @@
+{
+    "uri": "/welcome/yes",
+    "prompt": "We do too!",
+    "final": true,
+    "type": "termination",
+    "before-hooks": [{
+        "type": "mark-completed"
+    }],
+    "next-uri": "/end"
+}

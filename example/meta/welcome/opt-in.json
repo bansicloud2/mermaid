@@ -1,0 +1,21 @@
+{
+    "uri": "/welcome/opt-in",
+    "info": [
+        "Pleased to meet you <%=user.session.name%>."
+    ],
+    "prompt": "If you like the fact that you can build entire applications with JSON data reply `yes`, otherwise reply `no`",
+    "options": {
+        "yes": {
+            "uri": "/welcome/yes"
+        },
+        "no": {
+            "uri": "/misc/end-flow"
+        }
+    },
+    "type": "lettered-options",
+    "after-hooks": [{
+        "type": "mark-completed"
+    }],
+    "next-uri": "/welcome/yes",
+    "help-text" : "Type `yes` or `no`"
+}

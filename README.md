@@ -1,6 +1,6 @@
 # Mermaid
 
-![alt text](https://raw.githubusercontent.com/sage-bots/mermaid/master/app/public/img/mermaid.jpg?token=AB7b-drfe7mrizF6rqNa2hnsqibQlMD8ks5XskdUwA%3D%3D "Mermaid")
+![alt text](https://raw.githubusercontent.com/sage-bots/mermaid/master/lib/app/public/img/mermaid.jpg?token=AB7b-ah0layvLJZT8wqIbF3Bp95Ypc4_ks5Xt6fwwA%3D%3D "Mermaid")
 
 Mermaid is a cross-platform Data Description Language for rapid development & consistent user experiences for conversational UI applications.
 

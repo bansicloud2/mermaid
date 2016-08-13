@@ -1,0 +1,6 @@
+{
+    "uri": "/end",
+    "prompt": "You got to the end of the flow. Type 'restart' to restart your session.",
+    "final": true,
+    "type": "termination"
+}
