@@ -2,67 +2,76 @@ var path = require("path");
 
 var config = {
 
-  db: 'mongodb://localhost:27017/mermaid',
+    db: 'mongodb://localhost:27017/mermaid',
 
-  // admin_emails: ["tom@example.com"],
+    // admin_emails: ["tom@example.com"],
 
-  log_level: 'debug',
+    log_level: 'debug',
 
-  // mailgun: {
-  //     apiKey: "key-XXXXXXXXXXXXXXXXXXX",
-  //     domain: "XX.sagebots.com"
-  // },
+    // mailgun: {
+    //     apiKey: "key-XXXXXXXXXXXXXXXXXXX",
+    //     domain: "XX.sagebots.com"
+    // },
 
-  services: ["facebook"],
+    facebook: {
+        PAGE_ID: process.env.FACEBOOK_PAGE_ID,
+        PAGE_TOKEN: process.env.FACEBOOK_PAGE_TOKEN,
+        VERIFY_TOKEN: process.env.FACEBOOK_VERIFY_TOKEN,
+        persistent_menu: {
+            buttons: [{
+                title: "Start",
+                payload: "hi"
+            }, {
+                title: "Help",
+                payload: "help"
+            }]
+        },
+        greeting: {
+            text: "Hello, this is mermaid. Type `hi` to get started.",
+            payload: "hi"
+        }
+    },
 
-  facebook: {
-      PAGE_ID: process.env.FACEBOOK_PAGE_ID,
-      PAGE_TOKEN: process.env.FACEBOOK_PAGE_TOKEN,
-      VERIFY_TOKEN: process.env.FACEBOOK_VERIFY_TOKEN,
-      persistent_menu: {
-          buttons: [{
-              title: "Start",
-              payload: "hi"
-          }, {
-              title: "Help",
-              payload: "help"
-          }]
-      },
-      greeting: {
-          text: "Hello, this is mermaid. Type `hi` to get started.",
-          payload: "hi"
-      }
-  },
+    slack: {
+        SLACK_CLIENT_ID: process.env.SLACK_CLIENT_ID,
+        SLACK_CLIENT_SECRET: process.env.SLACK_CLIENT_SECRET
+    },
 
-  api: {
+    twilio: {
+        TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
+        TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,
+        TWILIO_NUMBER: process.env.TWILIO_NUMBER,
+    },
 
-      host: "localhost",
-      port: 3000,
-      url: "http://localhost:3000"
+    api: {
 
-  },
+        host: "localhost",
+        port: 3000,
+        url: "http://localhost:3000"
 
-  data_directory: path.join(__dirname, '../meta'),
+    },
 
-  validators_directory: path.join(__dirname, '../validators'),
+    data_directory: path.join(__dirname, '../meta'),
 
-  hooks_directory: path.join(__dirname, '../hooks'),
+    validators_directory: path.join(__dirname, '../validators'),
 
-  types_directory: path.join(__dirname, '../types'),
+    hooks_directory: path.join(__dirname, '../hooks'),
 
-  commands_pathname : path.join(__dirname, '../commands'),
+    types_directory: path.join(__dirname, '../types'),
 
-  bot_username: "mermaid",
+    commands_pathname: path.join(__dirname, '../commands'),
 
-  company: "Mermaid",
+    bot_username: "mermaid",
 
-  opening_message: 'Hello, this is mermaid. Type `hi` to get started.',
+    company: "Mermaid",
 
-  default_error_message: "🚨 Seems to have been an issue with your last entry. Can you try again for me?",
+    opening_message: 'Hello, this is mermaid. Type `hi` to get started.',
 
-  goto_message: "🚀 Taking to stage in workflow ...",
+    default_error_message: "🚨 Seems to have been an issue with your last entry. Can you try again for me?",
 
-  restart_message: "♻️ Just a moment while I scrub your data and get your profile ready...",
+    goto_message: "🚀 Taking to stage in workflow ...",
+
+    restart_message: "♻️ Just a moment while I scrub your data and get your profile ready...",
 
 };
 
