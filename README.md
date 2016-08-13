@@ -71,7 +71,7 @@ Additionally, you can also use all the HTTP verbs:
 - Facebook setup
 - E-mail alerts for Admins
 
-## Data Description Language
+## JSON Psuedo-Language
 
 Each stage in the workflow is defined using one .json document.
 
