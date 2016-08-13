@@ -1,10 +1,18 @@
 {
     "uri": "/welcome",
     "info": [
-        "Hi there :) My name is mermaid."
+        "Hi there 👋, My name is Mermaid 🐬."
     ],
     "prompt" : "To start us off politely, what is your name?",
     "next-uri" : "/welcome/opt-in",
     "type": "store-information",
-    "storage-property": "session.name"
+    "storage-property": "session.name",
+    "validators": [{
+        "type": "first-name",
+        "options": {
+            "error": {
+                "message" : "That's not your name silly. What's your name?"
+            }
+        }
+    }]
 }

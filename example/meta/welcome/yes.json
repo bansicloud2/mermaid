@@ -2,9 +2,9 @@
     "uri": "/welcome/yes",
     "prompt": "We do too!",
     "final": true,
-    "type": "termination",
+    "type": "redirect",
     "before-hooks": [{
         "type": "mark-completed"
     }],
-    "next-uri": "/end"
+    "next-uri": "/welcome/promo"
 }

@@ -1,0 +1,10 @@
+{
+    "uri": "/welcome/promo",
+    "prompt": "Btw - if you give us a 🌟 on github that would be super cool 😎: https://github.com/sage-bots/mermaid.",
+    "final": true,
+    "type": "termination",
+    "before-hooks": [{
+        "type": "mark-completed"
+    }],
+    "next-uri": "/end"
+}
