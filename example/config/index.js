@@ -14,9 +14,6 @@ var config = {
     // },
 
     facebook: {
-        PAGE_ID: process.env.FACEBOOK_PAGE_ID,
-        PAGE_TOKEN: process.env.FACEBOOK_PAGE_TOKEN,
-        VERIFY_TOKEN: process.env.FACEBOOK_VERIFY_TOKEN,
         persistent_menu: {
             buttons: [{
                 title: "Start",
@@ -30,17 +27,6 @@ var config = {
             text: "Hello, this is mermaid. Type `hi` to get started.",
             payload: "hi"
         }
-    },
-
-    slack: {
-        SLACK_CLIENT_ID: process.env.SLACK_CLIENT_ID,
-        SLACK_CLIENT_SECRET: process.env.SLACK_CLIENT_SECRET
-    },
-
-    twilio: {
-        TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
-        TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,
-        TWILIO_NUMBER: process.env.TWILIO_NUMBER,
     },
 
     api: {
