@@ -4,7 +4,8 @@
 
 Mermaid is a web application server with a cross-platform Data Description Language for rapid development & consistent user experiences for chatbot / conversational UI applications.
 
-```
+
+```js
 
 var mermaid = require('@sagebots/mermaid');
 
