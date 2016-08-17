@@ -6,19 +6,15 @@ Mermaid is a web application server with a cross-platform Data Description Langu
 
 
 ```js
-
 var mermaid = require('@sagebots/mermaid');
 
 mermaid();
-
 ```
 
 ## Installation
 
 ```
 $ npm install @sage-bots/mermaid
-
-
 ```
 
 ## Features
