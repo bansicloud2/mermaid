@@ -4,6 +4,22 @@
 
 Mermaid is a web application server with a cross-platform Data Description Language for rapid development & consistent user experiences for chatbot / conversational UI applications.
 
+```
+
+var mermaid = require('@sagebots/mermaid');
+
+mermaid();
+
+```
+
+## Installation
+
+```
+$ npm install @sage-bots/mermaid
+
+
+```
+
 ## Features
 
 - Data Description Language
@@ -58,9 +74,10 @@ Mermaid is a web application server with a cross-platform Data Description Langu
 
   - Using a http-based routing system to make it easy to manage state and traverse the `graph`.
 
+
 - Full-Featured REST API
 
-  - The foundation of the mermaid framework is an Express server wrapped by a Feathers wrapper.
+  - The foundation of the mermaid framework is an [Express](https://github.com/expressjs/express) server wrapped by a [Feathers](https://github.com/feathersjs/feathers) wrapper.
 
   - That auto-magically exposes a full-featured REST API for entities like users and messages.
 
